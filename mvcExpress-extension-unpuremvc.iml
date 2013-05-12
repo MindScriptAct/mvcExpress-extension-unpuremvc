@@ -2,11 +2,18 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="mvcExpress-extension-unpuremvc">
     <configurations>
-      <configuration name="mvcExpress-extension-unpuremvc" output-file="mvcExpress-extension-unpuremvc.swf" output-folder="$MODULE_DIR$/out/production/mvcExpress-extension-unpuremvc">
+      <configuration name="mvcExpress-extension-unpuremvc" main-class="PureMVC_AS3_UnitTests" output-file="mvcExpress-extension-unpuremvc.swf" output-folder="$MODULE_DIR$/bin">
         <dependencies target-player="11.4">
+          <entries>
+            <entry library-id="be779012-4cb0-4b47-b6e4-884da705d3d8">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
           <sdk name="flex_sdk_4.9.1" />
         </dependencies>
-        <compiler-options />
+        <compiler-options>
+          <option name="additionalOptions" value="-define=CONFIG::debug,true -default-size 1080 768" />
+        </compiler-options>
         <packaging-air-desktop />
         <packaging-android />
         <packaging-ios />
@@ -24,6 +31,16 @@
     </content>
     <orderEntry type="jdk" jdkName="flex_sdk_4.9.1" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="be779012-4cb0-4b47-b6e4-884da705d3d8" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/flexunit.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
