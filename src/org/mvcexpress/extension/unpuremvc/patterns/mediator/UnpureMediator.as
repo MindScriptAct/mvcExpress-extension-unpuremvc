@@ -3,15 +3,17 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.mediator {
+import org.mvcexpress.core.namespace.pureLegsCore;
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
+import org.mvcexpress.mvc.Mediator;
 
 /**
  * A base <code>IMediator</code> implementation.
  *
  * @see org.mvcexpress.extension.unpuremvc.core.view.View View
  */
-public class UnpureMediator {
+public class UnpureMediator extends Mediator {
 
 	// the mediator name
 	protected var mediatorName:String;
@@ -35,6 +37,26 @@ public class UnpureMediator {
 	public function UnpureMediator(mediatorName:String = null, viewComponent:Object = null) {
 //		this.mediatorName = (mediatorName != null) ? mediatorName : NAME;
 //		this.viewComponent = viewComponent;
+
+		use namespace pureLegsCore;
+
+		Mediator.canConstruct = true;
+		super();
+		Mediator.canConstruct = false;
+
+		moduleName = facade.getModuleName();
+		messenger = facade.getMessender();
+		proxyMap = facade.getProxyMap();
+
+		this.mediatorName = (mediatorName != null) ? mediatorName : NAME;
+		this.viewComponent = viewComponent;
+	}
+
+	pureLegsCore function initNotificationHandling():void {
+		var reactTo:Array = listNotificationInterests();
+		for (var i:int = 0; i < reactTo.length; i++) {
+			addHandler(reactTo[i], handleNotification)
+		}
 	}
 
 	/**
@@ -51,7 +73,7 @@ public class UnpureMediator {
 	 * @param Object the view component
 	 */
 	public function setViewComponent(viewComponent:Object):void {
-//		this.viewComponent = viewComponent;
+		this.viewComponent = viewComponent;
 	}
 
 	/**
@@ -99,14 +121,14 @@ public class UnpureMediator {
 	/**
 	 * Called by the View when the Mediator is registered
 	 */
-	public function onRegister():void {
-	}
+//	public function onRegister():void {
+//	}
 
 	/**
 	 * Called by the View when the Mediator is removed
 	 */
-	public function onRemove():void {
-	}
+//	public function onRemove():void {
+//	}
 
 	//----------------------------------
 	//	class Notifier
@@ -126,7 +148,8 @@ public class UnpureMediator {
 	 * @param type the type of the notification (optional)
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
-		facade.sendNotification(notificationName, body, type);
+		//facade.sendNotification(notificationName, body, type);
+		sendMessage(notificationName, new UnpureNotification(notificationName, body, type));
 	}
 
 }

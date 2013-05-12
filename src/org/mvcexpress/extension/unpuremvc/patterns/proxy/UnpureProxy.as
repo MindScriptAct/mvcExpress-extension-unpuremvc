@@ -4,6 +4,7 @@
  */
 package org.mvcexpress.extension.unpuremvc.patterns.proxy {
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.mvc.Proxy;
 
 /**
@@ -97,7 +98,7 @@ public class UnpureProxy extends Proxy {
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
 		//facade.sendNotification(notificationName, body, type);
-		sendMessage(notificationName, body);
+		sendMessage(notificationName, new UnpureNotification(notificationName, body, type));
 	}
 
 }

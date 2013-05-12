@@ -4,6 +4,15 @@
  */
 package org.mvcexpress.extension.unpuremvc.patterns.facade {
 
+import flash.utils.Dictionary;
+
+import org.mvcexpress.core.CommandMap;
+import org.mvcexpress.core.MediatorMap;
+import org.mvcexpress.core.ModuleBase;
+import org.mvcexpress.core.ModuleManager;
+import org.mvcexpress.core.ProxyMap;
+import org.mvcexpress.core.messenger.Messenger;
+import org.mvcexpress.core.namespace.pureLegsCore;
 import org.mvcexpress.extension.unpuremvc.core.*;
 import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
@@ -129,6 +138,193 @@ import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
  */
 public class UnpureFacade {
 
+	//----------------------------------
+	//	mvcExpress stuff
+	//----------------------------------
+
+	private var moduleBase:ModuleBase;
+
+	protected var proxyMap:ProxyMap;
+	protected var mediatorMap:MediatorMap;
+	protected var commandMap:CommandMap;
+
+	/**
+	 * CONSTRUCTOR
+	 * @param    moduleName    module name that is used for referencing a module. (if not provided - unique name will be generated.)
+	 * @param    autoInit    if set to false framework is not initialized for this module. If you want to use framework features you will have to manually init() it first.
+	 */
+//	public function ModuleFacade(moduleName:String = null, autoInit:Boolean = true) {
+//		//
+//		use namespace pureLegsCore;
+//
+//		moduleBase = ModuleManager.createModule(moduleName, autoInit);
+//		//
+//		if (autoInit) {
+//			proxyMap = moduleBase.proxyMap;
+//			mediatorMap = moduleBase.mediatorMap;
+//			commandMap = moduleBase.commandMap;
+//
+//			onInit();
+//		}
+//	}
+
+	/**
+	 * Name of the module
+	 */
+	public function get moduleName():String {
+		return moduleBase.moduleName;
+	}
+
+	/**
+	 * Initializes module. If this function is not called module will not work properly.
+	 * By default it is called in constructor, but you can do it manually if you set constructor parameter 'autoInit' to false.
+	 */
+	protected function initModule():void {
+		moduleBase.initModule();
+
+		proxyMap = moduleBase.proxyMap;
+		mediatorMap = moduleBase.mediatorMap;
+		commandMap = moduleBase.commandMap;
+
+		onInit();
+	}
+
+	/**
+	 * Function called after framework is initialized.
+	 * Meant to be overridden.
+	 */
+	protected function onInit():void {
+		// for override
+	}
+
+	/**
+	 * Function to get rid of module.
+	 * - All module commands are unmapped.
+	 * - All module mediators are unmediated
+	 * - All module proxies are unmapped
+	 * - All internals are nulled.
+	 */
+	public function disposeModule():void {
+		onDispose();
+		moduleBase.disposeModule();
+	}
+
+	/**
+	 * Function called before module is destroyed.
+	 * Meant to be overridden.
+	 */
+	protected function onDispose():void {
+		// for override
+	}
+
+	/**
+	 * Message sender.
+	 * @param    type    type of the message. (Commands and handle functions must bu map to it to react.)
+	 * @param    params    Object that will be send to Command execute() or to handle function as parameter.
+	 */
+	protected function sendMessage(type:String, params:Object = null):void {
+		moduleBase.sendMessage(type, params);
+	}
+
+	/**
+	 * Sends scoped module to module message, all modules that are listening to specified scopeName and message type will get it.
+	 * @param    scopeName    both sending and receiving modules must use same scope to make module to module communication.
+	 * @param    type        type of the message for Commands or Mediator's handle function to react to.
+	 * @param    params        Object that will be passed to Command execute() function or to handle functions.
+	 */
+	protected function sendScopeMessage(scopeName:String, type:String, params:Object = null):void {
+		moduleBase.sendScopeMessage(scopeName, type, params);
+	}
+
+	/**
+	 * Registers scope name.
+	 * If scope name is not registered - module to module communication via scope and mapping proxies to scope is not possible.
+	 * What features module can use with that scope is defined by parameters.
+	 * @param    scopeName            Name of the scope.
+	 * @param    messageSending        Modules can send messages to this scope.
+	 * @param    messageReceiving    Modules can receive and handle messages from this scope.(or map commands to scoped messages);
+	 * @param    proxieMap            Modules can map proxies to this scope.
+	 */
+	protected function registerScope(scopeName:String, messageSending:Boolean = true, messageReceiving:Boolean = true, proxieMapping:Boolean = false):void {
+		moduleBase.registerScope(scopeName, messageSending, messageReceiving, proxieMapping);
+	}
+
+	/**
+	 * Unregisters scope name.
+	 * Then scope is not registered module to module communication via scope and mapping proxies to scope becomes not possible.
+	 * @param    scopeName            Name of the scope.
+	 */
+	protected function unregisterScope(scopeName:String):void {
+		moduleBase.unregisterScope(scopeName);
+	}
+
+	//----------------------------------
+	//     Debug
+	//----------------------------------
+
+	/**
+	 * List all message mappings.
+	 */
+	public function listMappedMessages():String {
+		return moduleBase.listMappedMessages();
+	}
+
+	/**
+	 * List all view mappings.
+	 */
+	public function listMappedMediators():String {
+		return moduleBase.listMappedMediators();
+	}
+
+	/**
+	 * List all model mappings.
+	 */
+	public function listMappedProxies():String {
+		return moduleBase.listMappedProxies();
+	}
+
+	/**
+	 * List all controller mappings.
+	 */
+	public function listMappedCommands():String {
+		return moduleBase.listMappedCommands();
+	}
+
+	//----------------------------------
+	//
+	//	Pure MVC hacks
+	//
+	//----------------------------------
+
+	static private var commandRegistry:Dictionary = new Dictionary();
+	static private var proxyRegistry:Dictionary = new Dictionary();
+	static private var mediatorRegistry:Dictionary = new Dictionary();
+
+	public function getModuleName():String {
+		return moduleName;
+	}
+
+	pureLegsCore function getMediatorMap():MediatorMap {
+		return mediatorMap;
+	}
+
+	public function getMessender():Messenger {
+		use namespace pureLegsCore;
+
+		return moduleBase.messenger;
+	}
+
+	public function getProxyMap():ProxyMap {
+		return proxyMap;
+	}
+
+	//----------------------------------
+	//
+	//	Pure MVC interface
+	//
+	//----------------------------------
+
+
 	// Private references to Model, View and Controller
 	protected var controller:UnpureController;
 	protected var model:UnpureModel;
@@ -156,6 +352,24 @@ public class UnpureFacade {
 //		if (instance != null) throw Error(SINGLETON_MSG);
 //		instance = this;
 //		initializeFacade();
+
+		if (instance != null) throw Error(SINGLETON_MSG);
+		instance = this;
+
+		use namespace pureLegsCore;
+
+		moduleBase = ModuleManager.createModule(null, true);
+		//
+		if (true) {
+			proxyMap = moduleBase.proxyMap;
+			mediatorMap = moduleBase.mediatorMap;
+			commandMap = moduleBase.commandMap;
+
+			onInit();
+		}
+
+		initializeFacade();
+
 	}
 
 	/**
@@ -167,9 +381,9 @@ public class UnpureFacade {
 	 * sure to call <code>super.initializeFacade()</code>, though.</P>
 	 */
 	protected function initializeFacade():void {
-//		initializeModel();
-//		initializeController();
-//		initializeView();
+		initializeModel();
+		initializeController();
+		initializeView();
 	}
 
 	/**
@@ -178,7 +392,7 @@ public class UnpureFacade {
 	 * @return the Singleton instance of the Facade
 	 */
 	public static function getInstance():UnpureFacade {
-//		if (instance == null) instance = new UnpureFacade();
+		if (instance == null) instance = new UnpureFacade();
 		return instance;
 	}
 
@@ -199,8 +413,8 @@ public class UnpureFacade {
 	 * </P>
 	 */
 	protected function initializeController():void {
-//		if (controller != null) return;
-//		controller = UnpureController.getInstance();
+		if (controller != null) return;
+		controller = UnpureController.getInstance();
 	}
 
 	/**
@@ -227,8 +441,8 @@ public class UnpureFacade {
 	 * </P>
 	 */
 	protected function initializeModel():void {
-//		if (model != null) return;
-//		model = UnpureModel.getInstance();
+		if (model != null) return;
+		model = UnpureModel.getInstance();
 	}
 
 
@@ -267,6 +481,14 @@ public class UnpureFacade {
 	 */
 	public function registerCommand(notificationName:String, commandClassRef:Class):void {
 //		controller.registerCommand(notificationName, commandClassRef);
+
+		if (commandRegistry[notificationName]) {
+			throw  Error("Unpure error! : unpuremvc cant manage 2 commands on same notification:" + notificationName + " Old command:" + commandRegistry[notificationName] + " will be unmapped, and changed with:" + commandClassRef);
+			commandMap.unmap(notificationName, commandRegistry[notificationName]);
+			commandRegistry[notificationName] = null;
+		}
+		commandRegistry[notificationName] = commandClassRef;
+		commandMap.map(notificationName, commandClassRef);
 	}
 
 	/**
@@ -276,6 +498,10 @@ public class UnpureFacade {
 	 */
 	public function removeCommand(notificationName:String):void {
 //		controller.removeCommand(notificationName);
+
+		if (commandRegistry[notificationName]) {
+			commandMap.unmap(notificationName, commandRegistry[notificationName]);
+		}
 	}
 
 	/**
@@ -285,7 +511,9 @@ public class UnpureFacade {
 	 * @return whether a Command is currently registered for the given <code>notificationName</code>.
 	 */
 	public function hasCommand(notificationName:String):Boolean {
-		return controller.hasCommand(notificationName);
+		//return controller.hasCommand(notificationName);
+
+		return commandMap.mappedCommandCount(notificationName) > 0;
 	}
 
 	/**
@@ -296,6 +524,15 @@ public class UnpureFacade {
 	 */
 	public function registerProxy(proxy:UnpureProxy):void {
 //		model.registerProxy(proxy);
+
+		var proxyName:String = proxy.getProxyName();
+		if (proxyRegistry[proxyName]) {
+			throw  Error("Unpure error! : 2 proxies with same name!:" + proxyName + " Old proxy will be removed:" + proxyRegistry[proxyName] + ", new proxy:" + proxy);
+			proxyMap.unmap(proxyRegistry[proxyName]);
+			proxyRegistry[proxyName] = null;
+		}
+		proxyRegistry[proxyName] = proxy;
+		proxyMap.map(proxy);
 	}
 
 	/**
@@ -305,7 +542,9 @@ public class UnpureFacade {
 	 * @return the <code>IProxy</code> instance previously registered with the given <code>proxyName</code>.
 	 */
 	public function retrieveProxy(proxyName:String):UnpureProxy {
-		return model.retrieveProxy(proxyName);
+		//return model.retrieveProxy(proxyName);
+
+		return proxyRegistry[proxyName];
 	}
 
 	/**
@@ -315,9 +554,18 @@ public class UnpureFacade {
 	 * @return the <code>IProxy</code> that was removed from the <code>Model</code>
 	 */
 	public function removeProxy(proxyName:String):UnpureProxy {
-		var proxy:UnpureProxy;
+//		var proxy:UnpureProxy;
 //		if (model != null) proxy = model.removeProxy(proxyName);
+//		return proxy
+
+		var proxy:UnpureProxy = proxyRegistry[proxyName];
+		//if (model != null) proxy = model.removeProxy(proxyName);
+		if (proxy) {
+			proxyMap.unmap((proxy as Object).constructor as Class);
+			proxyRegistry[proxyName] = null;
+		}
 		return proxy
+
 	}
 
 	/**
@@ -327,7 +575,9 @@ public class UnpureFacade {
 	 * @return whether a Proxy is currently registered with the given <code>proxyName</code>.
 	 */
 	public function hasProxy(proxyName:String):Boolean {
-		return model.hasProxy(proxyName);
+//		return model.hasProxy(proxyName);
+
+		return (proxyRegistry[proxyName] != null);
 	}
 
 	/**
@@ -338,6 +588,18 @@ public class UnpureFacade {
 	 */
 	public function registerMediator(mediator:UnpureMediator):void {
 //		if (view != null) view.registerMediator(mediator);
+
+		var mediatorName:String = mediator.getMediatorName();
+		if (mediatorRegistry[mediatorName]) {
+			throw Error("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + mediatorRegistry[mediatorName] + ", new mediator:" + mediator);
+			mediatorRegistry[mediatorName] = null;
+		}
+		mediatorRegistry[mediatorName] = mediator;
+
+		use namespace pureLegsCore;
+
+		mediator.initNotificationHandling();
+		mediator.onRegister();
 	}
 
 	/**
@@ -347,7 +609,9 @@ public class UnpureFacade {
 	 * @return the <code>IMediator</code> previously registered with the given <code>mediatorName</code>.
 	 */
 	public function retrieveMediator(mediatorName:String):UnpureMediator {
-		return view.retrieveMediator(mediatorName) as UnpureMediator;
+//		return view.retrieveMediator(mediatorName) as UnpureMediator;
+
+		return mediatorRegistry[mediatorName];
 	}
 
 	/**
@@ -357,8 +621,15 @@ public class UnpureFacade {
 	 * @return the <code>IMediator</code> that was removed from the <code>View</code>
 	 */
 	public function removeMediator(mediatorName:String):UnpureMediator {
-		var mediator:UnpureMediator;
+//		var mediator:UnpureMediator;
 //		if (view != null) mediator = view.removeMediator(mediatorName);
+//		return mediator;
+
+		var mediator:UnpureMediator = mediatorRegistry[mediatorName]
+		if (mediator) {
+			mediator.onRemove();
+			mediatorRegistry[mediatorName] = null;
+		}
 		return mediator;
 	}
 
@@ -369,7 +640,9 @@ public class UnpureFacade {
 	 * @return whether a Mediator is registered with the given <code>mediatorName</code>.
 	 */
 	public function hasMediator(mediatorName:String):Boolean {
-		return view.hasMediator(mediatorName);
+//		return view.hasMediator(mediatorName);
+
+		return (mediatorRegistry[mediatorName] == null);
 	}
 
 	/**
@@ -384,6 +657,8 @@ public class UnpureFacade {
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
 //		notifyObservers(new UnpureNotification(notificationName, body, type));
+
+		sendMessage(notificationName, new UnpureNotification(notificationName, body, type));
 	}
 
 	/**
@@ -401,6 +676,8 @@ public class UnpureFacade {
 	 */
 	public function notifyObservers(notification:UnpureNotification):void {
 //		if (view != null) view.notifyObservers(notification);
+
+		sendMessage(notification.getType(), notification);
 	}
 
 }
