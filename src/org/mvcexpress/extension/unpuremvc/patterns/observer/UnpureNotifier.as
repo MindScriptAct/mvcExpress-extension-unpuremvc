@@ -3,7 +3,6 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.observer {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 
 /**
@@ -31,7 +30,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand SimpleCommand
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
-public class UnpureNotifier implements INotifier {
+public class UnpureNotifier {
 	/**
 	 * Create and send an <code>INotification</code>.
 	 *
@@ -47,6 +46,6 @@ public class UnpureNotifier implements INotifier {
 	}
 
 	// Local reference to the Facade Singleton
-	protected var facade:IFacade = UnpureFacade.getInstance();
+	protected var facade:UnpureFacade = UnpureFacade.getInstance();
 }
 }

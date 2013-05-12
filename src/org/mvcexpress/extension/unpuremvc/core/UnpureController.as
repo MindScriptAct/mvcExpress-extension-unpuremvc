@@ -3,7 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
+import org.mvcexpress.extension.unpuremvc.patterns.command.UnpureICommand;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -39,7 +39,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand SimpleCommand
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
-public class UnpureController implements IController {
+public class UnpureController {
 
 	/**
 	 * Constructor.
@@ -89,7 +89,7 @@ public class UnpureController implements IController {
 	 *
 	 * @return the Singleton instance of <code>Controller</code>
 	 */
-	public static function getInstance():IController {
+	public static function getInstance():UnpureController {
 		if (instance == null) instance = new UnpureController();
 		return instance;
 	}
@@ -100,11 +100,11 @@ public class UnpureController implements IController {
 	 *
 	 * @param note an <code>INotification</code>
 	 */
-	public function executeCommand(note:INotification):void {
+	public function executeCommand(note:UnpureNotification):void {
 		var commandClassRef:Class = commandMap[ note.getName() ];
 		if (commandClassRef == null) return;
 
-		var commandInstance:ICommand = new commandClassRef();
+		var commandInstance:UnpureICommand = new commandClassRef();
 		commandInstance.execute(note);
 	}
 
@@ -157,13 +157,13 @@ public class UnpureController implements IController {
 	}
 
 	// Local reference to View
-	protected var view:IView;
+	protected var view:UnpureView;
 
 	// Mapping of Notification names to Command Class references
 	protected var commandMap:Array;
 
 	// Singleton instance
-	protected static var instance:IController;
+	protected static var instance:UnpureController;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Controller Singleton already constructed!";

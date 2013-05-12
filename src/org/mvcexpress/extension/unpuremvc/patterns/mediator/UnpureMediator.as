@@ -3,7 +3,6 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.mediator {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -11,7 +10,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  *
  * @see org.mvcexpress.extension.unpuremvc.core.view.View View
  */
-public class UnpureMediator extends UnpureNotifier implements IMediator, INotifier {
+public class UnpureMediator extends UnpureNotifier {
 
 	/**
 	 * The name of the <code>Mediator</code>.
@@ -87,7 +86,7 @@ public class UnpureMediator extends UnpureNotifier implements IMediator, INotifi
 	 * with one 'case' entry per <code>INotification</code>
 	 * the <code>Mediator</code> is interested in.
 	 */
-	public function handleNotification(notification:INotification):void {
+	public function handleNotification(notification:UnpureNotification):void {
 	}
 
 	/**

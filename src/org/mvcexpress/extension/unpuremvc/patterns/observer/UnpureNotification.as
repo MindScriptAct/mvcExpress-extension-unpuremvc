@@ -3,8 +3,6 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.observer {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
-
 /**
  * A base <code>INotification</code> implementation.
  *
@@ -40,7 +38,7 @@ import org.mvcexpress.extension.unpuremvc.interfaces.*;
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver Observer
  *
  */
-public class UnpureNotification implements INotification {
+public class UnpureNotification {
 
 	/**
 	 * Constructor.

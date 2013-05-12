@@ -4,7 +4,7 @@
  */
 package org.mvcexpress.extension.unpuremvc.patterns.command {
 
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotifier;
 
 /**
@@ -18,7 +18,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotifier;
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification Notification
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
-public class UnpureSimpleCommand extends UnpureNotifier implements ICommand, INotifier {
+public class UnpureSimpleCommand extends UnpureNotifier implements UnpureICommand {
 
 	/**
 	 * Fulfill the use-case initiated by the given <code>INotification</code>.
@@ -31,7 +31,7 @@ public class UnpureSimpleCommand extends UnpureNotifier implements ICommand, INo
 	 *
 	 * @param notification the <code>INotification</code> to handle.
 	 */
-	public function execute(notification:INotification):void {
+	public function execute(notification:UnpureNotification):void {
 
 	}
 

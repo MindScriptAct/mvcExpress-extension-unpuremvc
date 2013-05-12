@@ -5,8 +5,9 @@
 package org.mvcexpress.extension.unpuremvc.patterns.facade {
 
 import org.mvcexpress.extension.unpuremvc.core.*;
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
 
 /**
  * A base Singleton <code>IFacade</code> implementation.
@@ -126,7 +127,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand SimpleCommand
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
-public class UnpureFacade implements IFacade {
+public class UnpureFacade {
 	/**
 	 * Constructor.
 	 *
@@ -164,7 +165,7 @@ public class UnpureFacade implements IFacade {
 	 *
 	 * @return the Singleton instance of the Facade
 	 */
-	public static function getInstance():IFacade {
+	public static function getInstance():UnpureFacade {
 		if (instance == null) instance = new UnpureFacade();
 		return instance;
 	}
@@ -281,17 +282,17 @@ public class UnpureFacade implements IFacade {
 	 * @param proxyName the name of the <code>IProxy</code>.
 	 * @param proxy the <code>IProxy</code> instance to be registered with the <code>Model</code>.
 	 */
-	public function registerProxy(proxy:IProxy):void {
+	public function registerProxy(proxy:UnpureProxy):void {
 		model.registerProxy(proxy);
 	}
 
 	/**
-	 * Retrieve an <code>IProxy</code> from the <code>Model</code> by name.
+	 * Retrieve an <code>UnpureProxy</code> from the <code>Model</code> by name.
 	 *
 	 * @param proxyName the name of the proxy to be retrieved.
 	 * @return the <code>IProxy</code> instance previously registered with the given <code>proxyName</code>.
 	 */
-	public function retrieveProxy(proxyName:String):IProxy {
+	public function retrieveProxy(proxyName:String):UnpureProxy {
 		return model.retrieveProxy(proxyName);
 	}
 
@@ -301,8 +302,8 @@ public class UnpureFacade implements IFacade {
 	 * @param proxyName the <code>IProxy</code> to remove from the <code>Model</code>.
 	 * @return the <code>IProxy</code> that was removed from the <code>Model</code>
 	 */
-	public function removeProxy(proxyName:String):IProxy {
-		var proxy:IProxy;
+	public function removeProxy(proxyName:String):UnpureProxy {
+		var proxy:UnpureProxy;
 		if (model != null) proxy = model.removeProxy(proxyName);
 		return proxy
 	}
@@ -323,7 +324,7 @@ public class UnpureFacade implements IFacade {
 	 * @param mediatorName the name to associate with this <code>IMediator</code>
 	 * @param mediator a reference to the <code>IMediator</code>
 	 */
-	public function registerMediator(mediator:IMediator):void {
+	public function registerMediator(mediator:UnpureMediator):void {
 		if (view != null) view.registerMediator(mediator);
 	}
 
@@ -333,8 +334,8 @@ public class UnpureFacade implements IFacade {
 	 * @param mediatorName
 	 * @return the <code>IMediator</code> previously registered with the given <code>mediatorName</code>.
 	 */
-	public function retrieveMediator(mediatorName:String):IMediator {
-		return view.retrieveMediator(mediatorName) as IMediator;
+	public function retrieveMediator(mediatorName:String):UnpureMediator {
+		return view.retrieveMediator(mediatorName) as UnpureMediator;
 	}
 
 	/**
@@ -343,8 +344,8 @@ public class UnpureFacade implements IFacade {
 	 * @param mediatorName name of the <code>IMediator</code> to be removed.
 	 * @return the <code>IMediator</code> that was removed from the <code>View</code>
 	 */
-	public function removeMediator(mediatorName:String):IMediator {
-		var mediator:IMediator;
+	public function removeMediator(mediatorName:String):UnpureMediator {
+		var mediator:UnpureMediator;
 		if (view != null) mediator = view.removeMediator(mediatorName);
 		return mediator;
 	}
@@ -386,17 +387,17 @@ public class UnpureFacade implements IFacade {
 	 *
 	 * @param notification the <code>INotification</code> to have the <code>View</code> notify <code>Observers</code> of.
 	 */
-	public function notifyObservers(notification:INotification):void {
+	public function notifyObservers(notification:UnpureNotification):void {
 		if (view != null) view.notifyObservers(notification);
 	}
 
 	// Private references to Model, View and Controller
-	protected var controller:IController;
-	protected var model:IModel;
-	protected var view:IView;
+	protected var controller:UnpureController;
+	protected var model:UnpureModel;
+	protected var view:UnpureView;
 
 	// The Singleton Facade instance.
-	protected static var instance:IFacade;
+	protected static var instance:UnpureFacade;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Facade Singleton already constructed!";

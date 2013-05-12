@@ -4,7 +4,8 @@
  */
 package org.mvcexpress.extension.unpuremvc.core {
 
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
 
 /**
@@ -26,7 +27,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver Observer
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification Notification
  */
-public class UnpureView implements IView {
+public class UnpureView {
 
 	/**
 	 * Constructor.
@@ -67,7 +68,7 @@ public class UnpureView implements IView {
 	 *
 	 * @return the Singleton instance of <code>View</code>
 	 */
-	public static function getInstance():IView {
+	public static function getInstance():UnpureView {
 		if (instance == null) instance = new UnpureView();
 		return instance;
 	}
@@ -79,7 +80,7 @@ public class UnpureView implements IView {
 	 * @param notificationName the name of the <code>INotifications</code> to notify this <code>IObserver</code> of
 	 * @param observer the <code>IObserver</code> to register
 	 */
-	public function registerObserver(notificationName:String, observer:IObserver):void {
+	public function registerObserver(notificationName:String, observer:UnpureObserver):void {
 		var observers:Array = observerMap[ notificationName ];
 		if (observers) {
 			observers.push(observer);
@@ -98,7 +99,7 @@ public class UnpureView implements IView {
 	 *
 	 * @param notification the <code>INotification</code> to notify <code>IObservers</code> of.
 	 */
-	public function notifyObservers(notification:INotification):void {
+	public function notifyObservers(notification:UnpureNotification):void {
 		if (observerMap[ notification.getName() ] != null) {
 
 			// Get a reference to the observers list for this notification name
@@ -107,15 +108,15 @@ public class UnpureView implements IView {
 			// Copy observers from reference array to working array,
 			// since the reference array may change during the notification loop
 			var observers:Array = new Array();
-			var observer:IObserver;
+			var observer:UnpureObserver;
 			for (var i:Number = 0; i < observers_ref.length; i++) {
-				observer = observers_ref[ i ] as IObserver;
+				observer = observers_ref[ i ] as UnpureObserver;
 				observers.push(observer);
 			}
 
 			// Notify Observers from the working array
 			for (i = 0; i < observers.length; i++) {
-				observer = observers[ i ] as IObserver;
+				observer = observers[ i ] as UnpureObserver;
 				observer.notifyObserver(notification);
 			}
 		}
@@ -165,7 +166,7 @@ public class UnpureView implements IView {
 	 * @param mediatorName the name to associate with this <code>IMediator</code> instance
 	 * @param mediator a reference to the <code>IMediator</code> instance
 	 */
-	public function registerMediator(mediator:IMediator):void {
+	public function registerMediator(mediator:UnpureMediator):void {
 		// do not allow re-registration (you must to removeMediator fist)
 		if (mediatorMap[ mediator.getMediatorName() ] != null) return;
 
@@ -197,7 +198,7 @@ public class UnpureView implements IView {
 	 * @param mediatorName the name of the <code>IMediator</code> instance to retrieve.
 	 * @return the <code>IMediator</code> instance previously registered with the given <code>mediatorName</code>.
 	 */
-	public function retrieveMediator(mediatorName:String):IMediator {
+	public function retrieveMediator(mediatorName:String):UnpureMediator {
 		return mediatorMap[ mediatorName ];
 	}
 
@@ -207,9 +208,9 @@ public class UnpureView implements IView {
 	 * @param mediatorName name of the <code>IMediator</code> instance to be removed.
 	 * @return the <code>IMediator</code> that was removed from the <code>View</code>
 	 */
-	public function removeMediator(mediatorName:String):IMediator {
+	public function removeMediator(mediatorName:String):UnpureMediator {
 		// Retrieve the named mediator
-		var mediator:IMediator = mediatorMap[ mediatorName ] as IMediator;
+		var mediator:UnpureMediator = mediatorMap[ mediatorName ] as UnpureMediator;
 
 		if (mediator) {
 			// for every notification this mediator is interested in...
@@ -247,7 +248,7 @@ public class UnpureView implements IView {
 	protected var observerMap:Array;
 
 	// Singleton instance
-	protected static var instance:IView;
+	protected static var instance:UnpureView;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "View Singleton already constructed!";

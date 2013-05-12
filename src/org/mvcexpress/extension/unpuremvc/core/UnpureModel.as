@@ -3,8 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
-
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
 
 /**
  * A Singleton <code>IModel</code> implementation.
@@ -32,7 +31,7 @@ import org.mvcexpress.extension.unpuremvc.interfaces.*;
  * @see org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy Proxy
  * @see org.mvcexpress.extension.unpuremvc.interfaces.IProxy IProxy
  */
-public class UnpureModel implements IModel {
+public class UnpureModel {
 	/**
 	 * Constructor.
 	 *
@@ -71,7 +70,7 @@ public class UnpureModel implements IModel {
 	 *
 	 * @return the Singleton instance
 	 */
-	public static function getInstance():IModel {
+	public static function getInstance():UnpureModel {
 		if (instance == null) instance = new UnpureModel();
 		return instance;
 	}
@@ -81,7 +80,7 @@ public class UnpureModel implements IModel {
 	 *
 	 * @param proxy an <code>IProxy</code> to be held by the <code>Model</code>.
 	 */
-	public function registerProxy(proxy:IProxy):void {
+	public function registerProxy(proxy:UnpureProxy):void {
 		proxyMap[ proxy.getProxyName() ] = proxy;
 		proxy.onRegister();
 	}
@@ -92,7 +91,7 @@ public class UnpureModel implements IModel {
 	 * @param proxyName
 	 * @return the <code>IProxy</code> instance previously registered with the given <code>proxyName</code>.
 	 */
-	public function retrieveProxy(proxyName:String):IProxy {
+	public function retrieveProxy(proxyName:String):UnpureProxy {
 		return proxyMap[ proxyName ];
 	}
 
@@ -112,8 +111,8 @@ public class UnpureModel implements IModel {
 	 * @param proxyName name of the <code>IProxy</code> instance to be removed.
 	 * @return the <code>IProxy</code> that was removed from the <code>Model</code>
 	 */
-	public function removeProxy(proxyName:String):IProxy {
-		var proxy:IProxy = proxyMap [ proxyName ] as IProxy;
+	public function removeProxy(proxyName:String):UnpureProxy {
+		var proxy:UnpureProxy = proxyMap [ proxyName ] as UnpureProxy;
 		if (proxy) {
 			proxyMap[ proxyName ] = null;
 			proxy.onRemove();
@@ -125,7 +124,7 @@ public class UnpureModel implements IModel {
 	protected var proxyMap:Array;
 
 	// Singleton instance
-	protected static var instance:IModel;
+	protected static var instance:UnpureModel;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Model Singleton already constructed!";

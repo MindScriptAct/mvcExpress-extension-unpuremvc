@@ -5,14 +5,14 @@
 
 	<mx:Script>
 		<![CDATA[
+		import flexunit.framework.TestSuite;
+
 		import org.mvcexpress.extension.unpuremvc.core.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 		import org.mvcexpress.extension.unpuremvc.patterns.command.*;
 		import org.mvcexpress.extension.unpuremvc.patterns.facade.*;
 		import org.mvcexpress.extension.unpuremvc.patterns.mediator.*;
+		import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 		import org.mvcexpress.extension.unpuremvc.patterns.proxy.*;
-
-		import flexunit.framework.TestSuite;
 
 		[SWF(width="1024", height="600", frameRate="30")]
 
@@ -41,6 +41,6 @@
 		]]>
 	</mx:Script>
 
-	<flexunit:TestRunnerBase id="testRunner" width="100%" height="100%" />
+	<flexunit:TestRunnerBase id="testRunner" width="100%" height="100%"/>
 
 </mx:Application>

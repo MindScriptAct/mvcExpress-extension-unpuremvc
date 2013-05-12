@@ -1,40 +1,35 @@
 /*
  PureMVC - Copyright(c) 2006-08 Futurecale, Inc., Some rights reserved.
  Your reuse is governed by Creative Commons Attribution 2.5 License
-*/
-package org.mvcexpress.extension.unpuremvc.patterns.command
-{
-	import org.mvcexpress.extension.unpuremvc.patterns.command.*;
-	import org.mvcexpress.extension.unpuremvc.interfaces.*;
+ */
+package org.mvcexpress.extension.unpuremvc.patterns.command {
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
+/**
+ * A SimpleCommand subclass used by MacroCommandTestCommand.
+ *
+ * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTest MacroCommandTest
+ * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTestCommand MacroCommandTestCommand
+ * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTestVO MacroCommandTestVO
+ */
+public class MacroCommandTestSub2Command extends UnpureSimpleCommand {
+	public function MacroCommandTestSub2Command() {
+		super();
+	}
 
 	/**
-	 * A SimpleCommand subclass used by MacroCommandTestCommand.
+	 * Fabricate a result by multiplying the input by itself
 	 *
-  	 * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTest MacroCommandTest
-  	 * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTestCommand MacroCommandTestCommand
-  	 * @see org.mvcexpress.extension.unpuremvc.patterns.command.MacroCommandTestVO MacroCommandTestVO
+	 * @param event the <code>IEvent</code> carrying the <code>MacroCommandTestVO</code>
 	 */
-	public class MacroCommandTestSub2Command extends UnpureSimpleCommand
-	{
-		public function MacroCommandTestSub2Command()
-		{
-			super();
-		}
+	override public function execute(note:UnpureNotification):void {
 
-		/**
-		 * Fabricate a result by multiplying the input by itself
-		 *
-		 * @param event the <code>IEvent</code> carrying the <code>MacroCommandTestVO</code>
-		 */
-		override public function execute( note:INotification) :void
-		{
+		var vo:MacroCommandTestVO = note.getBody() as MacroCommandTestVO;
 
-			var vo:MacroCommandTestVO = note.getBody() as MacroCommandTestVO;
-
-			// Fabricate a result
-			vo.result2 = vo.input * vo.input;
-
-		}
+		// Fabricate a result
+		vo.result2 = vo.input * vo.input;
 
 	}
+
+}
 }

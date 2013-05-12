@@ -3,8 +3,6 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.observer {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
-
 /**
  * A base <code>IObserver</code> implementation.
  *
@@ -25,7 +23,7 @@ import org.mvcexpress.extension.unpuremvc.interfaces.*;
  * @see org.mvcexpress.extension.unpuremvc.core.view.View View
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification Notification
  */
-public class UnpureObserver implements IObserver {
+public class UnpureObserver {
 	private var notify:Function;
 	private var context:Object;
 
@@ -88,7 +86,7 @@ public class UnpureObserver implements IObserver {
 	 *
 	 * @param notification the <code>INotification</code> to pass to the interested object's notification method.
 	 */
-	public function notifyObserver(notification:INotification):void {
+	public function notifyObserver(notification:UnpureNotification):void {
 		this.getNotifyMethod().apply(this.getNotifyContext(), [notification]);
 	}
 

@@ -1,79 +1,75 @@
 /*
  PureMVC - Copyright(c) 2006-08 Futurecale, Inc., Some rights reserved.
  Your reuse is governed by Creative Commons Attribution 2.5 License
-*/
-package org.mvcexpress.extension.unpuremvc.patterns.command
-{
-	import flexunit.framework.TestCase;
- 	import flexunit.framework.TestSuite;
+ */
+package org.mvcexpress.extension.unpuremvc.patterns.command {
+import flexunit.framework.TestCase;
+import flexunit.framework.TestSuite;
 
- 	import org.mvcexpress.extension.unpuremvc.interfaces.*;
- 	import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
- 	import org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestCommand;
- 	import org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestVO;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
+
+/**
+ * Test the PureMVC SimpleCommand class.
+ *
+ * @see org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestVO SimpleCommandTestVO
+ * @see org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestCommand SimpleCommandTestCommand
+ */
+public class SimpleCommandTest extends TestCase {
 
 	/**
-	 * Test the PureMVC SimpleCommand class.
+	 * Constructor.
 	 *
-  	 * @see org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestVO SimpleCommandTestVO
-  	 * @see org.mvcexpress.extension.unpuremvc.patterns.command.SimpleCommandTestCommand SimpleCommandTestCommand
+	 * @param methodName the name of the test method an instance to run
 	 */
- 	public class SimpleCommandTest extends TestCase {
+	public function SimpleCommandTest(methodName:String) {
+		super(methodName);
+	}
 
-  		/**
-  		 * Constructor.
-  		 *
-  		 * @param methodName the name of the test method an instance to run
-  		 */
-  	    public function SimpleCommandTest( methodName:String ) {
-   			super( methodName );
-           }
+	/**
+	 * Create the TestSuite.
+	 */
+	public static function suite():TestSuite {
 
-		/**
-		 * Create the TestSuite.
-		 */
-  		public static function suite():TestSuite {
+		var ts:TestSuite = new TestSuite();
 
-   			var ts:TestSuite = new TestSuite();
+		ts.addTest(new SimpleCommandTest("testSimpleCommandExecute"));
 
-   			ts.addTest( new SimpleCommandTest( "testSimpleCommandExecute" ) );
+		return ts;
+	}
 
-   			return ts;
-   		}
+	/**
+	 * Tests the <code>execute</code> method of a <code>SimpleCommand</code>.
+	 *
+	 * <P>
+	 * This test creates a new <code>Notification</code>, adding a
+	 * <code>SimpleCommandTestVO</code> as the body.
+	 * It then creates a <code>SimpleCommandTestCommand</code> and invokes
+	 * its <code>execute</code> method, passing in the note.</P>
+	 *
+	 * <P>
+	 * Success is determined by evaluating a property on the
+	 * object that was passed on the Notification body, which will
+	 * be modified by the SimpleCommand</P>.
+	 *
+	 */
+	public function testSimpleCommandExecute():void {
 
-  		/**
-  		 * Tests the <code>execute</code> method of a <code>SimpleCommand</code>.
-  		 *
-  		 * <P>
-  		 * This test creates a new <code>Notification</code>, adding a
-  		 * <code>SimpleCommandTestVO</code> as the body.
-  		 * It then creates a <code>SimpleCommandTestCommand</code> and invokes
-  		 * its <code>execute</code> method, passing in the note.</P>
-  		 *
-  		 * <P>
-  		 * Success is determined by evaluating a property on the
-  		 * object that was passed on the Notification body, which will
-  		 * be modified by the SimpleCommand</P>.
-  		 *
-  		 */
-  		public function testSimpleCommandExecute():void {
+		// Create the VO
+		var vo:SimpleCommandTestVO = new SimpleCommandTestVO(5);
 
-  			// Create the VO
-  			var vo:SimpleCommandTestVO = new SimpleCommandTestVO(5);
+		// Create the Notification (note)
+		var note:UnpureNotification = new UnpureNotification('SimpleCommandTestNote', vo);
 
-  			// Create the Notification (note)
-  			var note:UnpureNotification = new UnpureNotification('SimpleCommandTestNote', vo);
+		// Create the SimpleCommand
+		var command:SimpleCommandTestCommand = new SimpleCommandTestCommand();
 
-			// Create the SimpleCommand
-			var command:SimpleCommandTestCommand = new SimpleCommandTestCommand();
+		// Execute the SimpleCommand
+		command.execute(note);
 
-   			// Execute the SimpleCommand
-   			command.execute(note);
+		// test assertions
+		assertTrue("Expecting vo.result == 10", vo.result == 10);
 
-   			// test assertions
-   			assertTrue( "Expecting vo.result == 10", vo.result == 10 );
+	}
 
-   		}
-
-  	}
+}
 }

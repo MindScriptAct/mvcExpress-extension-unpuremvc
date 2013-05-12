@@ -1,71 +1,67 @@
 /*
  PureMVC - Copyright(c) 2006-08 Futurecale, Inc., Some rights reserved.
  Your reuse is governed by Creative Commons Attribution 2.5 License
-*/
-package org.mvcexpress.extension.unpuremvc.patterns.mediator
-{
-	import flexunit.framework.TestCase;
- 	import flexunit.framework.TestSuite;
+ */
+package org.mvcexpress.extension.unpuremvc.patterns.mediator {
+import flexunit.framework.TestCase;
+import flexunit.framework.TestSuite;
 
- 	import org.mvcexpress.extension.unpuremvc.interfaces.*;
- 	import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+/**
+ * Test the PureMVC Mediator class.
+ *
+ * @see org.mvcexpress.extension.unpuremvc.interfaces.IMediator IMediator
+ * @see org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator Mediator
+ */
+public class MediatorTest extends TestCase {
 
- 	/**
-	 * Test the PureMVC Mediator class.
+	/**
+	 * Constructor.
 	 *
-	 * @see org.mvcexpress.extension.unpuremvc.interfaces.IMediator IMediator
-	 * @see org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator Mediator
+	 * @param methodName the name of the test method an instance to run
 	 */
-	public class MediatorTest extends TestCase {
+	public function MediatorTest(methodName:String) {
+		super(methodName);
+	}
 
-   		/**
-  		 * Constructor.
-  		 *
-  		 * @param methodName the name of the test method an instance to run
-  		 */
- 	    public function MediatorTest ( methodName:String ) {
-   			super( methodName );
-           }
+	/**
+	 * Create the TestSuite.
+	 */
+	public static function suite():TestSuite {
+		var ts:TestSuite = new TestSuite();
 
- 		/**
-		 * Create the TestSuite.
-		 */
- 		public static function suite():TestSuite {
-   			var ts:TestSuite = new TestSuite();
+		ts.addTest(new MediatorTest("testNameAccessor"));
+		ts.addTest(new MediatorTest("testViewAccessor"));
 
-   			ts.addTest( new MediatorTest( "testNameAccessor" ) );
-   			ts.addTest( new MediatorTest( "testViewAccessor" ) );
-
-   			return ts;
-   		}
+		return ts;
+	}
 
 
-  		/**
-  		 * Tests getting the name using Mediator class accessor method.
-  		 */
-  		public function testNameAccessor():void {
+	/**
+	 * Tests getting the name using Mediator class accessor method.
+	 */
+	public function testNameAccessor():void {
 
-			// Create a new Mediator and use accessors to set the mediator name
-   			var mediator:UnpureMediator = new UnpureMediator();
+		// Create a new Mediator and use accessors to set the mediator name
+		var mediator:UnpureMediator = new UnpureMediator();
 
-   			// test assertions
-   			assertTrue( "Expecting mediator.getMediatorName() == Mediator.NAME", mediator.getMediatorName() == UnpureMediator.NAME );
-   		}
+		// test assertions
+		assertTrue("Expecting mediator.getMediatorName() == Mediator.NAME", mediator.getMediatorName() == UnpureMediator.NAME);
+	}
 
-  		/**
-  		 * Tests getting the name using Mediator class accessor method.
-  		 */
-  		public function testViewAccessor():void {
+	/**
+	 * Tests getting the name using Mediator class accessor method.
+	 */
+	public function testViewAccessor():void {
 
-			// Create a view object
-			var view:Object = new Object();
+		// Create a view object
+		var view:Object = new Object();
 
-			// Create a new Proxy and use accessors to set the proxy name
-   			var mediator:UnpureMediator = new UnpureMediator( UnpureMediator.NAME, view );
+		// Create a new Proxy and use accessors to set the proxy name
+		var mediator:UnpureMediator = new UnpureMediator(UnpureMediator.NAME, view);
 
-   			// test assertions
-   			assertNotNull( "Expecting mediator.getViewComponent() not null", mediator.getViewComponent() );
-   		}
+		// test assertions
+		assertNotNull("Expecting mediator.getViewComponent() not null", mediator.getViewComponent());
+	}
 
-  	}
+}
 }

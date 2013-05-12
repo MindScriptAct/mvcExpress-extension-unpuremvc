@@ -3,7 +3,6 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.proxy {
-import org.mvcexpress.extension.unpuremvc.interfaces.*;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -27,7 +26,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  *
  * @see org.mvcexpress.extension.unpuremvc.core.model.Model Model
  */
-public class UnpureProxy extends UnpureNotifier implements IProxy, INotifier {
+public class UnpureProxy extends UnpureNotifier {
 
 	public static var NAME:String = 'Proxy';
 
