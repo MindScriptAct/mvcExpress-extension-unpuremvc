@@ -596,17 +596,19 @@ public class UnpureFacade {
 	public function registerMediator(mediator:UnpureMediator):void {
 //		if (view != null) view.registerMediator(mediator);
 
+		use namespace pureLegsCore;
+
 		var mediatorName:String = mediator.getMediatorName();
-		if (mediatorRegistry[mediatorName]) {
-			trace("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + mediatorRegistry[mediatorName] + ", new mediator:" + mediator);
+		var oldMediator:UnpureMediator = mediatorRegistry[mediatorName];
+		if (oldMediator) {
+			trace("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + oldMediator + ", new mediator:" + mediator);
+			oldMediator.remove();
 			mediatorRegistry[mediatorName] = null;
 		}
 		mediatorRegistry[mediatorName] = mediator;
 
-		use namespace pureLegsCore;
-
 		mediator.initNotificationHandling();
-		mediator.onRegister();
+		mediator.register();
 	}
 
 	/**
@@ -632,9 +634,11 @@ public class UnpureFacade {
 //		if (view != null) mediator = view.removeMediator(mediatorName);
 //		return mediator;
 
+		use namespace pureLegsCore;
+
 		var mediator:UnpureMediator = mediatorRegistry[mediatorName]
 		if (mediator) {
-			mediator.onRemove();
+			mediator.remove();
 			mediatorRegistry[mediatorName] = null;
 		}
 		return mediator;

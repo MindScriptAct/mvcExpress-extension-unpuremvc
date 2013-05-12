@@ -105,6 +105,10 @@ public class UnpureView {
 //		} else {
 //			observerMap[notificationName] = [observer];
 //		}
+
+//		if(){
+//
+//		}
 	}
 
 	/**
