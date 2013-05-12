@@ -6,6 +6,7 @@ package org.mvcexpress.extension.unpuremvc.patterns.command {
 
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
+import org.mvcexpress.mvc.Command;
 
 /**
  * A base <code>ICommand</code> implementation that executes other <code>ICommand</code>s.
@@ -34,7 +35,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification Notification
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand SimpleCommand
  */
-public class UnpureMacroCommand implements UnpureICommand {
+public class UnpureMacroCommand extends Command implements UnpureICommand {
 
 	private var subCommands:Array;
 
@@ -51,8 +52,8 @@ public class UnpureMacroCommand implements UnpureICommand {
 	 * sure to call <code>super()</code>.</P>
 	 */
 	public function UnpureMacroCommand() {
-//		subCommands = new Array();
-//		initializeMacroCommand();
+		subCommands = new Array();
+		initializeMacroCommand();
 	}
 
 	/**
@@ -91,7 +92,7 @@ public class UnpureMacroCommand implements UnpureICommand {
 	 * @param commandClassRef a reference to the <code>Class</code> of the <code>ICommand</code>.
 	 */
 	protected function addSubCommand(commandClassRef:Class):void {
-//		subCommands.push(commandClassRef);
+		subCommands.push(commandClassRef);
 	}
 
 	/**
@@ -109,6 +110,10 @@ public class UnpureMacroCommand implements UnpureICommand {
 //			var commandInstance:UnpureICommand = new commandClassRef();
 //			commandInstance.execute(notification);
 //		}
+
+		for (var i:int = 0; i < subCommands.length; i++) {
+			commandMap.execute(subCommands[i], notification);
+		}
 	}
 
 	//----------------------------------
@@ -129,7 +134,10 @@ public class UnpureMacroCommand implements UnpureICommand {
 	 * @param type the type of the notification (optional)
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
-		facade.sendNotification(notificationName, body, type);
+//		facade.sendNotification(notificationName, body, type);
+
+		sendMessage(notificationName, new UnpureNotification(notificationName, body, type));
+
 	}
 
 }
