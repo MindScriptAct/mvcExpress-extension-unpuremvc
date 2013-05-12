@@ -4,6 +4,7 @@
  */
 package org.mvcexpress.extension.unpuremvc.patterns.proxy {
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
+import org.mvcexpress.mvc.Proxy;
 
 /**
  * A base <code>IProxy</code> implementation.
@@ -26,7 +27,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
  *
  * @see org.mvcexpress.extension.unpuremvc.core.model.Model Model
  */
-public class UnpureProxy {
+public class UnpureProxy extends Proxy {
 
 	public static var NAME:String = 'Proxy';
 
@@ -40,8 +41,8 @@ public class UnpureProxy {
 	 * Constructor
 	 */
 	public function UnpureProxy(proxyName:String = null, data:Object = null) {
-//		this.proxyName = (proxyName != null) ? proxyName : NAME;
-//		if (data != null) setData(data);
+		this.proxyName = (proxyName != null) ? proxyName : NAME;
+		if (data != null) setData(data);
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class UnpureProxy {
 	 * Set the data object
 	 */
 	public function setData(data:Object):void {
-//		this.data = data;
+		this.data = data;
 	}
 
 	/**
@@ -68,14 +69,14 @@ public class UnpureProxy {
 	/**
 	 * Called by the Model when the Proxy is registered
 	 */
-	public function onRegister():void {
-	}
+//	public function onRegister():void {
+//	}
 
 	/**
 	 * Called by the Model when the Proxy is removed
 	 */
-	public function onRemove():void {
-	}
+//	public function onRemove():void {
+//	}
 
 	//----------------------------------
 	//	class Notifier
@@ -95,7 +96,8 @@ public class UnpureProxy {
 	 * @param type the type of the notification (optional)
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
-		facade.sendNotification(notificationName, body, type);
+		//facade.sendNotification(notificationName, body, type);
+		sendMessage(notificationName, body);
 	}
 
 }

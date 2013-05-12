@@ -10,11 +10,11 @@ public class ModelTestProxy extends UnpureProxy {
 		super(NAME, '');
 	}
 
-	override public function onRegister():void {
+	override protected function onRegister():void {
 		setData(ON_REGISTER_CALLED);
 	}
 
-	override public function onRemove():void {
+	override protected function onRemove():void {
 		setData(ON_REMOVE_CALLED);
 	}
 }
