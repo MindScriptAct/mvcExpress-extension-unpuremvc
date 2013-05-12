@@ -4,17 +4,17 @@ import flash.utils.describeType;
 
 /**
  * Small class to test if framework can use Inject metadata tag.
- * (It might be not compiled in, in release mode if '-keep-as3-metadata+=Inject' compile argument is not used.
+ * (It might be not compiled in, in release mode if '-keep-extension-metadata+=Inject' compile argument is not used.
  * @author Raimundas Banevicius (http://www.mindscriptact.com/)
  */
 public class testInject {
-	
+
 	[Inject]
 	public var metadataTest:Boolean;
-	
+
 	public function testInjectMetaTag():Boolean {
 		var retVal:Boolean = false;
-		
+
 		var classDescription:XML = describeType(testInject);
 		var factoryNodes:XMLList = classDescription.factory.*;
 		var nodeCount:int = factoryNodes.length();
