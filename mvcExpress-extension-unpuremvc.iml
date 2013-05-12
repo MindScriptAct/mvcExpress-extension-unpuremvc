@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="mvcExpress-extension-unpuremvc">
     <configurations>
-      <configuration name="mvcExpress-extension-unpuremvc" main-class="PureMVC_AS3_UnitTests" output-file="mvcExpress-extension-unpuremvc.swf" output-folder="$MODULE_DIR$/bin">
+      <configuration name="mvcExpress-extension-unpuremvc" main-class="UnPureMVC_AS3_UnitTests" output-file="mvcExpress-extension-unpuremvc.swf" output-folder="$MODULE_DIR$/bin">
         <dependencies target-player="11.4">
           <entries>
             <entry library-id="be779012-4cb0-4b47-b6e4-884da705d3d8">
