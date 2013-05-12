@@ -3,6 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
 
 /**
@@ -38,6 +39,8 @@ public class UnpureModel {
 
 	// Singleton instance
 	protected static var instance:UnpureModel;
+
+	private static var facade:UnpureFacade;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Model Singleton already constructed!";
@@ -81,7 +84,10 @@ public class UnpureModel {
 	 * @return the Singleton instance
 	 */
 	public static function getInstance():UnpureModel {
-//		if (instance == null) instance = new UnpureModel();
+		if (instance == null) {
+			instance = new UnpureModel();
+			facade = UnpureFacade.getInstance();
+		}
 		return instance;
 	}
 
@@ -93,6 +99,8 @@ public class UnpureModel {
 	public function registerProxy(proxy:UnpureProxy):void {
 //		proxyMap[ proxy.getProxyName() ] = proxy;
 //		proxy.onRegister();
+
+		facade.registerProxy(proxy);
 	}
 
 	/**
@@ -102,7 +110,9 @@ public class UnpureModel {
 	 * @return the <code>IProxy</code> instance previously registered with the given <code>proxyName</code>.
 	 */
 	public function retrieveProxy(proxyName:String):UnpureProxy {
-		return proxyMap[ proxyName ];
+//		return proxyMap[ proxyName ];
+
+		return facade.retrieveProxy(proxyName);
 	}
 
 	/**
@@ -112,7 +122,9 @@ public class UnpureModel {
 	 * @return whether a Proxy is currently registered with the given <code>proxyName</code>.
 	 */
 	public function hasProxy(proxyName:String):Boolean {
-		return proxyMap[proxyName] != null;
+//		return proxyMap[proxyName] != null;
+
+		return facade.hasProxy(proxyName);
 	}
 
 	/**
@@ -122,12 +134,17 @@ public class UnpureModel {
 	 * @return the <code>IProxy</code> that was removed from the <code>Model</code>
 	 */
 	public function removeProxy(proxyName:String):UnpureProxy {
-		var proxy:UnpureProxy = proxyMap [ proxyName ] as UnpureProxy;
+//		var proxy:UnpureProxy = proxyMap [ proxyName ] as UnpureProxy;
 //		if (proxy) {
 //			proxyMap[ proxyName ] = null;
 //			proxy.onRemove();
 //		}
+//		return proxy;
+
+		var proxy:UnpureProxy = facade.retrieveProxy(proxyName);
+		facade.removeProxy(proxyName);
 		return proxy;
+
 	}
 
 }

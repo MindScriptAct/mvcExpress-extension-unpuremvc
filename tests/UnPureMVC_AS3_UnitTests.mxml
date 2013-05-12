@@ -39,12 +39,10 @@
 
 
 //			ts.addTest(ObserverTest.suite());
-//			ts.addTest(ModelTest.suite());
 //			ts.addTest(ViewTest.suite());
 //			ts.addTest(ControllerTest.suite());
-			ts.addTest(FacadeTest.suite());
 
-
+			ts.addTest(ModelTest.suite());
 
 
 			return ts;

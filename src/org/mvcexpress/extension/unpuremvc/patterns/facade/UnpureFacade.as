@@ -489,7 +489,7 @@ public class UnpureFacade {
 //		controller.registerCommand(notificationName, commandClassRef);
 
 		if (commandRegistry[notificationName]) {
-			throw  Error("Unpure error! : unpuremvc cant manage 2 commands on same notification:" + notificationName + " Old command:" + commandRegistry[notificationName] + " will be unmapped, and changed with:" + commandClassRef);
+			trace("Unpure error! : unpuremvc cant manage 2 commands on same notification:" + notificationName + " Old command:" + commandRegistry[notificationName] + " will be unmapped, and changed with:" + commandClassRef);
 			commandMap.unmap(notificationName, commandRegistry[notificationName]);
 			commandRegistry[notificationName] = null;
 		}
@@ -532,13 +532,14 @@ public class UnpureFacade {
 //		model.registerProxy(proxy);
 
 		var proxyName:String = proxy.getProxyName();
-		if (proxyRegistry[proxyName]) {
-			throw  Error("Unpure error! : 2 proxies with same name!:" + proxyName + " Old proxy will be removed:" + proxyRegistry[proxyName] + ", new proxy:" + proxy);
-			proxyMap.unmap(proxyRegistry[proxyName]);
+		var oldProxy:Object = proxyRegistry[proxyName];
+		if (oldProxy) {
+			trace("Unpure error! : 2 proxies with same name!:" + proxyName + " Old proxy will be removed:" + proxyRegistry[proxyName] + ", new proxy:" + proxy);
+			proxyMap.unmap(oldProxy.constructor, proxyName);
 			proxyRegistry[proxyName] = null;
 		}
 		proxyRegistry[proxyName] = proxy;
-		proxyMap.map(proxy);
+		proxyMap.map(proxy, (proxy as Object).constructor, proxyName);
 	}
 
 	/**
@@ -567,10 +568,10 @@ public class UnpureFacade {
 		var proxy:UnpureProxy = proxyRegistry[proxyName];
 		//if (model != null) proxy = model.removeProxy(proxyName);
 		if (proxy) {
-			proxyMap.unmap((proxy as Object).constructor as Class);
+			proxyMap.unmap((proxy as Object).constructor, proxyName);
 			proxyRegistry[proxyName] = null;
 		}
-		return proxy
+		return proxy;
 
 	}
 
@@ -597,7 +598,7 @@ public class UnpureFacade {
 
 		var mediatorName:String = mediator.getMediatorName();
 		if (mediatorRegistry[mediatorName]) {
-			throw Error("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + mediatorRegistry[mediatorName] + ", new mediator:" + mediator);
+			trace("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + mediatorRegistry[mediatorName] + ", new mediator:" + mediator);
 			mediatorRegistry[mediatorName] = null;
 		}
 		mediatorRegistry[mediatorName] = mediator;
