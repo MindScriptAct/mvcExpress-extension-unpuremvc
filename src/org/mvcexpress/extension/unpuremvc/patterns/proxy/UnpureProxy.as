@@ -3,7 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.proxy {
-import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 
 /**
  * A base <code>IProxy</code> implementation.
@@ -26,7 +26,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  *
  * @see org.mvcexpress.extension.unpuremvc.core.model.Model Model
  */
-public class UnpureProxy extends UnpureNotifier {
+public class UnpureProxy {
 
 	public static var NAME:String = 'Proxy';
 
@@ -75,6 +75,27 @@ public class UnpureProxy extends UnpureNotifier {
 	 * Called by the Model when the Proxy is removed
 	 */
 	public function onRemove():void {
+	}
+
+	//----------------------------------
+	//	class Notifier
+	//----------------------------------
+
+	// Local reference to the Facade Singleton
+	protected var facade:UnpureFacade = UnpureFacade.getInstance();
+
+	/**
+	 * Create and send an <code>INotification</code>.
+	 *
+	 * <P>
+	 * Keeps us from having to construct new INotification
+	 * instances in our implementation code.
+	 * @param notificationName the name of the notiification to send
+	 * @param body the body of the notification (optional)
+	 * @param type the type of the notification (optional)
+	 */
+	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
+		facade.sendNotification(notificationName, body, type);
 	}
 
 }

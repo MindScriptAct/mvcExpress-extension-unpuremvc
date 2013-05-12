@@ -4,6 +4,7 @@
  */
 package org.mvcexpress.extension.unpuremvc.patterns.command {
 
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -33,7 +34,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  * @see org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification Notification
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand SimpleCommand
  */
-public class UnpureMacroCommand extends UnpureNotifier implements UnpureICommand {
+public class UnpureMacroCommand implements UnpureICommand {
 
 	private var subCommands:Array;
 
@@ -108,6 +109,27 @@ public class UnpureMacroCommand extends UnpureNotifier implements UnpureICommand
 //			var commandInstance:UnpureICommand = new commandClassRef();
 //			commandInstance.execute(notification);
 //		}
+	}
+
+	//----------------------------------
+	//	class Notifier
+	//----------------------------------
+
+	// Local reference to the Facade Singleton
+	protected var facade:UnpureFacade = UnpureFacade.getInstance();
+
+	/**
+	 * Create and send an <code>INotification</code>.
+	 *
+	 * <P>
+	 * Keeps us from having to construct new INotification
+	 * instances in our implementation code.
+	 * @param notificationName the name of the notiification to send
+	 * @param body the body of the notification (optional)
+	 * @param type the type of the notification (optional)
+	 */
+	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
+		facade.sendNotification(notificationName, body, type);
 	}
 
 }

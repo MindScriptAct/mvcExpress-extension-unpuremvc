@@ -3,6 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.mediator {
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -10,7 +11,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  *
  * @see org.mvcexpress.extension.unpuremvc.core.view.View View
  */
-public class UnpureMediator extends UnpureNotifier {
+public class UnpureMediator {
 
 	// the mediator name
 	protected var mediatorName:String;
@@ -105,6 +106,27 @@ public class UnpureMediator extends UnpureNotifier {
 	 * Called by the View when the Mediator is removed
 	 */
 	public function onRemove():void {
+	}
+
+	//----------------------------------
+	//	class Notifier
+	//----------------------------------
+
+	// Local reference to the Facade Singleton
+	protected var facade:UnpureFacade = UnpureFacade.getInstance();
+
+	/**
+	 * Create and send an <code>INotification</code>.
+	 *
+	 * <P>
+	 * Keeps us from having to construct new INotification
+	 * instances in our implementation code.
+	 * @param notificationName the name of the notiification to send
+	 * @param body the body of the notification (optional)
+	 * @param type the type of the notification (optional)
+	 */
+	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
+		facade.sendNotification(notificationName, body, type);
 	}
 
 }
