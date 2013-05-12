@@ -60,6 +60,8 @@ public class FacadeTest extends TestCase {
 		assertTrue("Expecting instance not null", facade != null);
 		assertTrue("Expecting instance implements IFacade", facade is UnpureFacade);
 
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -93,6 +95,9 @@ public class FacadeTest extends TestCase {
 
 		// test assertions
 		assertTrue("Expecting vo.result == 64", vo.result == 64);
+
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -127,6 +132,9 @@ public class FacadeTest extends TestCase {
 
 		// test assertions
 		assertTrue("Expecting vo.result != 64", vo.result != 64);
+
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -158,6 +166,9 @@ public class FacadeTest extends TestCase {
 		assertTrue("Expecting data[0] == 'red'", data[0] == 'red');
 		assertTrue("Expecting data[1] == 'green'", data[1] == 'green');
 		assertTrue("Expecting data[2] == 'blue'", data[2] == 'blue');
+
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -182,6 +193,9 @@ public class FacadeTest extends TestCase {
 
 		// test assertions
 		assertNull("Expecting proxy is null", proxy);
+
+		// dispose
+		facade.disposeModule();
 	}
 
 
@@ -208,6 +222,8 @@ public class FacadeTest extends TestCase {
 		assertTrue("Expecting facade.retrieveMediator( Mediator.NAME ) == null )",
 				facade.retrieveMediator(UnpureMediator.NAME) == null);
 
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -224,6 +240,8 @@ public class FacadeTest extends TestCase {
 		assertTrue("Expecting facade.hasProxy('hasProxyTest') == true",
 				facade.hasProxy('hasProxyTest') == true);
 
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -247,6 +265,8 @@ public class FacadeTest extends TestCase {
 		assertTrue("Expecting facade.hasMediator('facadeHasMediatorTest') == false",
 				facade.hasMediator('facadeHasMediatorTest') == false);
 
+		// dispose
+		facade.disposeModule();
 	}
 
 	/**
@@ -267,6 +287,8 @@ public class FacadeTest extends TestCase {
 		// test that hasCommand returns false for hasCommandTest notifications
 		assertTrue("Expecting facade.hasCommand('facadeHasCommandTest') == false", facade.hasCommand('facadeHasCommandTest') == false);
 
+		// dispose
+		facade.disposeModule();
 	}
 
 }

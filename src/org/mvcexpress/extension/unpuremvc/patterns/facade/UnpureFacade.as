@@ -207,6 +207,7 @@ public class UnpureFacade {
 	public function disposeModule():void {
 		onDispose();
 		moduleBase.disposeModule();
+		instance = null;
 	}
 
 	/**
@@ -296,9 +297,9 @@ public class UnpureFacade {
 	//
 	//----------------------------------
 
-	static private var commandRegistry:Dictionary = new Dictionary();
-	static private var proxyRegistry:Dictionary = new Dictionary();
-	static private var mediatorRegistry:Dictionary = new Dictionary();
+	static private var commandRegistry:Dictionary;
+	static private var proxyRegistry:Dictionary;
+	static private var mediatorRegistry:Dictionary;
 
 	public function getModuleName():String {
 		return moduleName;
@@ -392,7 +393,12 @@ public class UnpureFacade {
 	 * @return the Singleton instance of the Facade
 	 */
 	public static function getInstance():UnpureFacade {
-		if (instance == null) instance = new UnpureFacade();
+		if (instance == null) {
+			instance = new UnpureFacade();
+			commandRegistry = new Dictionary();
+			proxyRegistry = new Dictionary();
+			mediatorRegistry = new Dictionary();
+		}
 		return instance;
 	}
 
@@ -642,7 +648,7 @@ public class UnpureFacade {
 	public function hasMediator(mediatorName:String):Boolean {
 //		return view.hasMediator(mediatorName);
 
-		return (mediatorRegistry[mediatorName] == null);
+		return (mediatorRegistry[mediatorName] != null);
 	}
 
 	/**
