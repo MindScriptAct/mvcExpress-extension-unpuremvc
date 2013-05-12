@@ -3,7 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
-import org.mvcexpress.extension.unpuremvc.patterns.command.UnpureICommand;
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
 /**
@@ -45,10 +45,12 @@ public class UnpureController {
 	protected var view:UnpureView;
 
 	// Mapping of Notification names to Command Class references
-	protected var commandMap:Array;
+//	protected var commandMap:Array;
 
 	// Singleton instance
 	protected static var instance:UnpureController;
+
+	private static var facade:UnpureFacade;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Controller Singleton already constructed!";
@@ -66,10 +68,10 @@ public class UnpureController {
 	 *
 	 */
 	public function UnpureController() {
-//		if (instance != null) throw Error(SINGLETON_MSG);
-//		instance = this;
+		if (instance != null) throw Error(SINGLETON_MSG);
+		instance = this;
 //		commandMap = new Array();
-//		initializeController();
+		initializeController();
 	}
 
 	/**
@@ -93,7 +95,7 @@ public class UnpureController {
 	 * @return void
 	 */
 	protected function initializeController():void {
-//		view = UnpureView.getInstance();
+		view = UnpureView.getInstance();
 	}
 
 	/**
@@ -102,7 +104,10 @@ public class UnpureController {
 	 * @return the Singleton instance of <code>Controller</code>
 	 */
 	public static function getInstance():UnpureController {
-//		if (instance == null) instance = new UnpureController();
+		if (instance == null) {
+			instance = new UnpureController();
+			facade = UnpureFacade.getInstance();
+		}
 		return instance;
 	}
 
@@ -118,6 +123,8 @@ public class UnpureController {
 //
 //		var commandInstance:UnpureICommand = new commandClassRef();
 //		commandInstance.execute(note);
+
+		facade.sendNotification(note.getName(), note.getBody(), note.getType());
 	}
 
 	/**
@@ -140,6 +147,8 @@ public class UnpureController {
 //			view.registerObserver(notificationName, new UnpureObserver(executeCommand, this));
 //		}
 //		commandMap[ notificationName ] = commandClassRef;
+
+		facade.registerCommand(notificationName, commandClassRef);
 	}
 
 	/**
@@ -149,7 +158,9 @@ public class UnpureController {
 	 * @return whether a Command is currently registered for the given <code>notificationName</code>.
 	 */
 	public function hasCommand(notificationName:String):Boolean {
-		return commandMap[ notificationName ] != null;
+//		return commandMap[ notificationName ] != null;
+
+		return facade.hasCommand(notificationName);
 	}
 
 	/**
@@ -166,6 +177,8 @@ public class UnpureController {
 //			// remove the command
 //			commandMap[ notificationName ] = null;
 //		}
+
+		facade.removeCommand(notificationName);
 	}
 
 }

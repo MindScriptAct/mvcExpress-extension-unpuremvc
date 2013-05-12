@@ -4,6 +4,7 @@
  */
 package org.mvcexpress.extension.unpuremvc.core {
 
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
@@ -30,13 +31,15 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
 public class UnpureView {
 
 	// Mapping of Mediator names to Mediator instances
-	protected var mediatorMap:Array;
+//	protected var mediatorMap:Array;
 
 	// Mapping of Notification names to Observer lists
-	protected var observerMap:Array;
+//	protected var observerMap:Array;
 
 	// Singleton instance
 	protected static var instance:UnpureView;
+
+	private static var facade:UnpureFacade;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "View Singleton already constructed!";
@@ -55,10 +58,10 @@ public class UnpureView {
 	 */
 	public function UnpureView() {
 		if (instance != null) throw Error(SINGLETON_MSG);
-//		instance = this;
+		instance = this;
 //		mediatorMap = new Array();
 //		observerMap = new Array();
-//		initializeView();
+		initializeView();
 	}
 
 	/**
@@ -81,7 +84,10 @@ public class UnpureView {
 	 * @return the Singleton instance of <code>View</code>
 	 */
 	public static function getInstance():UnpureView {
-//		if (instance == null) instance = new UnpureView();
+		if (instance == null) {
+			instance = new UnpureView();
+			facade = UnpureFacade.getInstance();
+		}
 		return instance;
 	}
 
@@ -132,6 +138,8 @@ public class UnpureView {
 //				observer.notifyObserver(notification);
 //			}
 //		}
+
+		facade.sendNotification(notification.getName(), notification.getBody(), notification.getType());
 	}
 
 	/**
@@ -202,6 +210,8 @@ public class UnpureView {
 //		// alert the mediator that it has been registered
 //		mediator.onRegister();
 
+		facade.registerMediator(mediator);
+
 	}
 
 	/**
@@ -211,7 +221,9 @@ public class UnpureView {
 	 * @return the <code>IMediator</code> instance previously registered with the given <code>mediatorName</code>.
 	 */
 	public function retrieveMediator(mediatorName:String):UnpureMediator {
-		return mediatorMap[mediatorName];
+//		return mediatorMap[mediatorName];
+
+		return facade.retrieveMediator(mediatorName);
 	}
 
 	/**
@@ -222,7 +234,7 @@ public class UnpureView {
 	 */
 	public function removeMediator(mediatorName:String):UnpureMediator {
 		// Retrieve the named mediator
-		var mediator:UnpureMediator = mediatorMap[mediatorName] as UnpureMediator;
+//		var mediator:UnpureMediator = mediatorMap[mediatorName] as UnpureMediator;
 //
 //		if (mediator) {
 //			// for every notification this mediator is interested in...
@@ -239,8 +251,12 @@ public class UnpureView {
 //			// alert the mediator that it has been removed
 //			mediator.onRemove();
 //		}
+//		return mediator;
 
+		var mediator:UnpureMediator = facade.retrieveMediator(mediatorName);
+		facade.removeMediator(mediatorName);
 		return mediator;
+
 	}
 
 	/**
@@ -250,7 +266,9 @@ public class UnpureView {
 	 * @return whether a Mediator is registered with the given <code>mediatorName</code>.
 	 */
 	public function hasMediator(mediatorName:String):Boolean {
-		return mediatorMap[mediatorName] != null;
+//		return mediatorMap[mediatorName] != null;
+
+		return facade.hasMediator(mediatorName);
 	}
 
 

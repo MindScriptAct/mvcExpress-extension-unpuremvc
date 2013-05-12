@@ -40,9 +40,8 @@
 
 //			ts.addTest(ObserverTest.suite());
 //			ts.addTest(ViewTest.suite());
-//			ts.addTest(ControllerTest.suite());
+			ts.addTest(ControllerTest.suite());
 
-			ts.addTest(ModelTest.suite());
 
 
 			return ts;
