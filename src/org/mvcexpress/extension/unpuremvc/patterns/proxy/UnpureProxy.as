@@ -30,13 +30,18 @@ public class UnpureProxy extends UnpureNotifier {
 
 	public static var NAME:String = 'Proxy';
 
+	// the proxy name
+	protected var proxyName:String;
+
+	// the data object
+	protected var data:Object;
+
 	/**
 	 * Constructor
 	 */
 	public function UnpureProxy(proxyName:String = null, data:Object = null) {
-
-		this.proxyName = (proxyName != null) ? proxyName : NAME;
-		if (data != null) setData(data);
+//		this.proxyName = (proxyName != null) ? proxyName : NAME;
+//		if (data != null) setData(data);
 	}
 
 	/**
@@ -50,7 +55,7 @@ public class UnpureProxy extends UnpureNotifier {
 	 * Set the data object
 	 */
 	public function setData(data:Object):void {
-		this.data = data;
+//		this.data = data;
 	}
 
 	/**
@@ -72,11 +77,5 @@ public class UnpureProxy extends UnpureNotifier {
 	public function onRemove():void {
 	}
 
-
-	// the proxy name
-	protected var proxyName:String;
-
-	// the data object
-	protected var data:Object;
 }
 }

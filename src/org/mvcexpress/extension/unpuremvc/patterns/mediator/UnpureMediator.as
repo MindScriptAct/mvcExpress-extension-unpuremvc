@@ -12,6 +12,12 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  */
 public class UnpureMediator extends UnpureNotifier {
 
+	// the mediator name
+	protected var mediatorName:String;
+
+	// The view component
+	protected var viewComponent:Object;
+
 	/**
 	 * The name of the <code>Mediator</code>.
 	 *
@@ -26,8 +32,8 @@ public class UnpureMediator extends UnpureNotifier {
 	 * Constructor.
 	 */
 	public function UnpureMediator(mediatorName:String = null, viewComponent:Object = null) {
-		this.mediatorName = (mediatorName != null) ? mediatorName : NAME;
-		this.viewComponent = viewComponent;
+//		this.mediatorName = (mediatorName != null) ? mediatorName : NAME;
+//		this.viewComponent = viewComponent;
 	}
 
 	/**
@@ -44,7 +50,7 @@ public class UnpureMediator extends UnpureNotifier {
 	 * @param Object the view component
 	 */
 	public function setViewComponent(viewComponent:Object):void {
-		this.viewComponent = viewComponent;
+//		this.viewComponent = viewComponent;
 	}
 
 	/**
@@ -75,7 +81,7 @@ public class UnpureMediator extends UnpureNotifier {
 	 * @return Array the list of <code>INotification</code> names
 	 */
 	public function listNotificationInterests():Array {
-		return [ ];
+		return [];
 	}
 
 	/**
@@ -101,10 +107,5 @@ public class UnpureMediator extends UnpureNotifier {
 	public function onRemove():void {
 	}
 
-	// the mediator name
-	protected var mediatorName:String;
-
-	// The view component
-	protected var viewComponent:Object;
 }
 }

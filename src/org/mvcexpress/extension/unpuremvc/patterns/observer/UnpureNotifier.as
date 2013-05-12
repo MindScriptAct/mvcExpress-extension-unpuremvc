@@ -31,6 +31,10 @@ import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
 public class UnpureNotifier {
+
+	// Local reference to the Facade Singleton
+	protected var facade:UnpureFacade = UnpureFacade.getInstance();
+
 	/**
 	 * Create and send an <code>INotification</code>.
 	 *
@@ -42,10 +46,8 @@ public class UnpureNotifier {
 	 * @param type the type of the notification (optional)
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
-		facade.sendNotification(notificationName, body, type);
+//		facade.sendNotification(notificationName, body, type);
 	}
 
-	// Local reference to the Facade Singleton
-	protected var facade:UnpureFacade = UnpureFacade.getInstance();
 }
 }

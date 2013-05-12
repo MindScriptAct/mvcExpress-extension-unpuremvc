@@ -40,6 +40,13 @@ package org.mvcexpress.extension.unpuremvc.patterns.observer {
  */
 public class UnpureNotification {
 
+	// the name of the notification instance
+	private var name:String;
+	// the type of the notification instance
+	private var type:String;
+	// the body of the notification instance
+	private var body:Object;
+
 	/**
 	 * Constructor.
 	 *
@@ -105,13 +112,6 @@ public class UnpureNotification {
 		msg += "\nType:" + (( type == null ) ? "null" : type);
 		return msg;
 	}
-
-	// the name of the notification instance
-	private var name:String;
-	// the type of the notification instance
-	private var type:String;
-	// the body of the notification instance
-	private var body:Object;
 
 }
 }

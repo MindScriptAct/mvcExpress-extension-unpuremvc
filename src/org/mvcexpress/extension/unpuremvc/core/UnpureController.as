@@ -41,6 +41,18 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
  */
 public class UnpureController {
 
+	// Local reference to View
+	protected var view:UnpureView;
+
+	// Mapping of Notification names to Command Class references
+	protected var commandMap:Array;
+
+	// Singleton instance
+	protected static var instance:UnpureController;
+
+	// Message Constants
+	protected const SINGLETON_MSG:String = "Controller Singleton already constructed!";
+
 	/**
 	 * Constructor.
 	 *
@@ -54,10 +66,10 @@ public class UnpureController {
 	 *
 	 */
 	public function UnpureController() {
-		if (instance != null) throw Error(SINGLETON_MSG);
-		instance = this;
-		commandMap = new Array();
-		initializeController();
+//		if (instance != null) throw Error(SINGLETON_MSG);
+//		instance = this;
+//		commandMap = new Array();
+//		initializeController();
 	}
 
 	/**
@@ -81,7 +93,7 @@ public class UnpureController {
 	 * @return void
 	 */
 	protected function initializeController():void {
-		view = UnpureView.getInstance();
+//		view = UnpureView.getInstance();
 	}
 
 	/**
@@ -90,7 +102,7 @@ public class UnpureController {
 	 * @return the Singleton instance of <code>Controller</code>
 	 */
 	public static function getInstance():UnpureController {
-		if (instance == null) instance = new UnpureController();
+//		if (instance == null) instance = new UnpureController();
 		return instance;
 	}
 
@@ -101,11 +113,11 @@ public class UnpureController {
 	 * @param note an <code>INotification</code>
 	 */
 	public function executeCommand(note:UnpureNotification):void {
-		var commandClassRef:Class = commandMap[ note.getName() ];
-		if (commandClassRef == null) return;
-
-		var commandInstance:UnpureICommand = new commandClassRef();
-		commandInstance.execute(note);
+//		var commandClassRef:Class = commandMap[ note.getName() ];
+//		if (commandClassRef == null) return;
+//
+//		var commandInstance:UnpureICommand = new commandClassRef();
+//		commandInstance.execute(note);
 	}
 
 	/**
@@ -124,10 +136,10 @@ public class UnpureController {
 	 * @param commandClassRef the <code>Class</code> of the <code>ICommand</code>
 	 */
 	public function registerCommand(notificationName:String, commandClassRef:Class):void {
-		if (commandMap[ notificationName ] == null) {
-			view.registerObserver(notificationName, new UnpureObserver(executeCommand, this));
-		}
-		commandMap[ notificationName ] = commandClassRef;
+//		if (commandMap[ notificationName ] == null) {
+//			view.registerObserver(notificationName, new UnpureObserver(executeCommand, this));
+//		}
+//		commandMap[ notificationName ] = commandClassRef;
 	}
 
 	/**
@@ -146,27 +158,15 @@ public class UnpureController {
 	 * @param notificationName the name of the <code>INotification</code> to remove the <code>ICommand</code> mapping for
 	 */
 	public function removeCommand(notificationName:String):void {
-		// if the Command is registered...
-		if (hasCommand(notificationName)) {
-			// remove the observer
-			view.removeObserver(notificationName, this);
-
-			// remove the command
-			commandMap[ notificationName ] = null;
-		}
+//		// if the Command is registered...
+//		if (hasCommand(notificationName)) {
+//			// remove the observer
+//			view.removeObserver(notificationName, this);
+//
+//			// remove the command
+//			commandMap[ notificationName ] = null;
+//		}
 	}
-
-	// Local reference to View
-	protected var view:UnpureView;
-
-	// Mapping of Notification names to Command Class references
-	protected var commandMap:Array;
-
-	// Singleton instance
-	protected static var instance:UnpureController;
-
-	// Message Constants
-	protected const SINGLETON_MSG:String = "Controller Singleton already constructed!";
 
 }
 }

@@ -32,6 +32,16 @@ import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
  * @see org.mvcexpress.extension.unpuremvc.interfaces.IProxy IProxy
  */
 public class UnpureModel {
+
+	// Mapping of proxyNames to IProxy instances
+	protected var proxyMap:Array;
+
+	// Singleton instance
+	protected static var instance:UnpureModel;
+
+	// Message Constants
+	protected const SINGLETON_MSG:String = "Model Singleton already constructed!";
+
 	/**
 	 * Constructor.
 	 *
@@ -45,10 +55,10 @@ public class UnpureModel {
 	 *
 	 */
 	public function UnpureModel() {
-		if (instance != null) throw Error(SINGLETON_MSG);
-		instance = this;
-		proxyMap = new Array();
-		initializeModel();
+//		if (instance != null) throw Error(SINGLETON_MSG);
+//		instance = this;
+//		proxyMap = new Array();
+//		initializeModel();
 	}
 
 	/**
@@ -71,7 +81,7 @@ public class UnpureModel {
 	 * @return the Singleton instance
 	 */
 	public static function getInstance():UnpureModel {
-		if (instance == null) instance = new UnpureModel();
+//		if (instance == null) instance = new UnpureModel();
 		return instance;
 	}
 
@@ -81,8 +91,8 @@ public class UnpureModel {
 	 * @param proxy an <code>IProxy</code> to be held by the <code>Model</code>.
 	 */
 	public function registerProxy(proxy:UnpureProxy):void {
-		proxyMap[ proxy.getProxyName() ] = proxy;
-		proxy.onRegister();
+//		proxyMap[ proxy.getProxyName() ] = proxy;
+//		proxy.onRegister();
 	}
 
 	/**
@@ -102,7 +112,7 @@ public class UnpureModel {
 	 * @return whether a Proxy is currently registered with the given <code>proxyName</code>.
 	 */
 	public function hasProxy(proxyName:String):Boolean {
-		return proxyMap[ proxyName ] != null;
+		return proxyMap[proxyName] != null;
 	}
 
 	/**
@@ -113,21 +123,12 @@ public class UnpureModel {
 	 */
 	public function removeProxy(proxyName:String):UnpureProxy {
 		var proxy:UnpureProxy = proxyMap [ proxyName ] as UnpureProxy;
-		if (proxy) {
-			proxyMap[ proxyName ] = null;
-			proxy.onRemove();
-		}
+//		if (proxy) {
+//			proxyMap[ proxyName ] = null;
+//			proxy.onRemove();
+//		}
 		return proxy;
 	}
-
-	// Mapping of proxyNames to IProxy instances
-	protected var proxyMap:Array;
-
-	// Singleton instance
-	protected static var instance:UnpureModel;
-
-	// Message Constants
-	protected const SINGLETON_MSG:String = "Model Singleton already constructed!";
 
 }
 }

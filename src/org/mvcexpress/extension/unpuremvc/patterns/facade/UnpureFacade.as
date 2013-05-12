@@ -128,6 +128,18 @@ import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
  * @see org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand MacroCommand
  */
 public class UnpureFacade {
+
+	// Private references to Model, View and Controller
+	protected var controller:UnpureController;
+	protected var model:UnpureModel;
+	protected var view:UnpureView;
+
+	// The Singleton Facade instance.
+	protected static var instance:UnpureFacade;
+
+	// Message Constants
+	protected const SINGLETON_MSG:String = "Facade Singleton already constructed!";
+
 	/**
 	 * Constructor.
 	 *
@@ -141,9 +153,9 @@ public class UnpureFacade {
 	 *
 	 */
 	public function UnpureFacade() {
-		if (instance != null) throw Error(SINGLETON_MSG);
-		instance = this;
-		initializeFacade();
+//		if (instance != null) throw Error(SINGLETON_MSG);
+//		instance = this;
+//		initializeFacade();
 	}
 
 	/**
@@ -155,9 +167,9 @@ public class UnpureFacade {
 	 * sure to call <code>super.initializeFacade()</code>, though.</P>
 	 */
 	protected function initializeFacade():void {
-		initializeModel();
-		initializeController();
-		initializeView();
+//		initializeModel();
+//		initializeController();
+//		initializeView();
 	}
 
 	/**
@@ -166,7 +178,7 @@ public class UnpureFacade {
 	 * @return the Singleton instance of the Facade
 	 */
 	public static function getInstance():UnpureFacade {
-		if (instance == null) instance = new UnpureFacade();
+//		if (instance == null) instance = new UnpureFacade();
 		return instance;
 	}
 
@@ -187,8 +199,8 @@ public class UnpureFacade {
 	 * </P>
 	 */
 	protected function initializeController():void {
-		if (controller != null) return;
-		controller = UnpureController.getInstance();
+//		if (controller != null) return;
+//		controller = UnpureController.getInstance();
 	}
 
 	/**
@@ -215,8 +227,8 @@ public class UnpureFacade {
 	 * </P>
 	 */
 	protected function initializeModel():void {
-		if (model != null) return;
-		model = UnpureModel.getInstance();
+//		if (model != null) return;
+//		model = UnpureModel.getInstance();
 	}
 
 
@@ -254,7 +266,7 @@ public class UnpureFacade {
 	 * @param commandClassRef a reference to the Class of the <code>ICommand</code>
 	 */
 	public function registerCommand(notificationName:String, commandClassRef:Class):void {
-		controller.registerCommand(notificationName, commandClassRef);
+//		controller.registerCommand(notificationName, commandClassRef);
 	}
 
 	/**
@@ -263,7 +275,7 @@ public class UnpureFacade {
 	 * @param notificationName the name of the <code>INotification</code> to remove the <code>ICommand</code> mapping for
 	 */
 	public function removeCommand(notificationName:String):void {
-		controller.removeCommand(notificationName);
+//		controller.removeCommand(notificationName);
 	}
 
 	/**
@@ -283,7 +295,7 @@ public class UnpureFacade {
 	 * @param proxy the <code>IProxy</code> instance to be registered with the <code>Model</code>.
 	 */
 	public function registerProxy(proxy:UnpureProxy):void {
-		model.registerProxy(proxy);
+//		model.registerProxy(proxy);
 	}
 
 	/**
@@ -304,7 +316,7 @@ public class UnpureFacade {
 	 */
 	public function removeProxy(proxyName:String):UnpureProxy {
 		var proxy:UnpureProxy;
-		if (model != null) proxy = model.removeProxy(proxyName);
+//		if (model != null) proxy = model.removeProxy(proxyName);
 		return proxy
 	}
 
@@ -325,7 +337,7 @@ public class UnpureFacade {
 	 * @param mediator a reference to the <code>IMediator</code>
 	 */
 	public function registerMediator(mediator:UnpureMediator):void {
-		if (view != null) view.registerMediator(mediator);
+//		if (view != null) view.registerMediator(mediator);
 	}
 
 	/**
@@ -346,7 +358,7 @@ public class UnpureFacade {
 	 */
 	public function removeMediator(mediatorName:String):UnpureMediator {
 		var mediator:UnpureMediator;
-		if (view != null) mediator = view.removeMediator(mediatorName);
+//		if (view != null) mediator = view.removeMediator(mediatorName);
 		return mediator;
 	}
 
@@ -371,7 +383,7 @@ public class UnpureFacade {
 	 * @param type the type of the notification (optional)
 	 */
 	public function sendNotification(notificationName:String, body:Object = null, type:String = null):void {
-		notifyObservers(new UnpureNotification(notificationName, body, type));
+//		notifyObservers(new UnpureNotification(notificationName, body, type));
 	}
 
 	/**
@@ -388,19 +400,8 @@ public class UnpureFacade {
 	 * @param notification the <code>INotification</code> to have the <code>View</code> notify <code>Observers</code> of.
 	 */
 	public function notifyObservers(notification:UnpureNotification):void {
-		if (view != null) view.notifyObservers(notification);
+//		if (view != null) view.notifyObservers(notification);
 	}
-
-	// Private references to Model, View and Controller
-	protected var controller:UnpureController;
-	protected var model:UnpureModel;
-	protected var view:UnpureView;
-
-	// The Singleton Facade instance.
-	protected static var instance:UnpureFacade;
-
-	// Message Constants
-	protected const SINGLETON_MSG:String = "Facade Singleton already constructed!";
 
 }
 }

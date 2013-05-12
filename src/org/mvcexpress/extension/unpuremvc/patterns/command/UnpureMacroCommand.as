@@ -50,8 +50,8 @@ public class UnpureMacroCommand extends UnpureNotifier implements UnpureICommand
 	 * sure to call <code>super()</code>.</P>
 	 */
 	public function UnpureMacroCommand() {
-		subCommands = new Array();
-		initializeMacroCommand();
+//		subCommands = new Array();
+//		initializeMacroCommand();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class UnpureMacroCommand extends UnpureNotifier implements UnpureICommand
 	 * @param commandClassRef a reference to the <code>Class</code> of the <code>ICommand</code>.
 	 */
 	protected function addSubCommand(commandClassRef:Class):void {
-		subCommands.push(commandClassRef);
+//		subCommands.push(commandClassRef);
 	}
 
 	/**
@@ -103,11 +103,11 @@ public class UnpureMacroCommand extends UnpureNotifier implements UnpureICommand
 	 * @param notification the <code>INotification</code> object to be passsed to each <i>SubCommand</i>.
 	 */
 	public final function execute(notification:UnpureNotification):void {
-		while (subCommands.length > 0) {
-			var commandClassRef:Class = subCommands.shift();
-			var commandInstance:UnpureICommand = new commandClassRef();
-			commandInstance.execute(notification);
-		}
+//		while (subCommands.length > 0) {
+//			var commandClassRef:Class = subCommands.shift();
+//			var commandInstance:UnpureICommand = new commandClassRef();
+//			commandInstance.execute(notification);
+//		}
 	}
 
 }
