@@ -38,8 +38,8 @@ public class UnpureObserver {
 	 * @param notifyContext the notification context of the interested object
 	 */
 	public function UnpureObserver(notifyMethod:Function, notifyContext:Object) {
-//		setNotifyMethod(notifyMethod);
-//		setNotifyContext(notifyContext);
+		setNotifyMethod(notifyMethod);
+		setNotifyContext(notifyContext);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class UnpureObserver {
 	 * @param notifyMethod the notification (callback) method of the interested object.
 	 */
 	public function setNotifyMethod(notifyMethod:Function):void {
-//		notify = notifyMethod;
+		notify = notifyMethod;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class UnpureObserver {
 	 * @param notifyContext the notification context (this) of the interested object.
 	 */
 	public function setNotifyContext(notifyContext:Object):void {
-//		context = notifyContext;
+		context = notifyContext;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class UnpureObserver {
 	 * @param notification the <code>INotification</code> to pass to the interested object's notification method.
 	 */
 	public function notifyObserver(notification:UnpureNotification):void {
-//		this.getNotifyMethod().apply(this.getNotifyContext(), [notification]);
+		this.getNotifyMethod().apply(this.getNotifyContext(), [notification]);
 	}
 
 	/**

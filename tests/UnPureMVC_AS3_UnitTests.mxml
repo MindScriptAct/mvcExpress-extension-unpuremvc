@@ -8,11 +8,6 @@
 		import flexunit.framework.TestSuite;
 
 		import org.mvcexpress.extension.unpuremvc.core.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.command.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.facade.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.mediator.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
-		import org.mvcexpress.extension.unpuremvc.patterns.proxy.*;
 
 		[SWF(width="1024", height="600", frameRate="30")]
 
@@ -37,10 +32,7 @@
 //			ts.addTest(FacadeTest.suite());
 
 
-
-//			ts.addTest(ObserverTest.suite());
 			ts.addTest(ViewTest.suite());
-
 
 
 			return ts;

@@ -8,6 +8,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.observerCommand.UnpureObserverCommand;
 
 /**
  * A Singleton <code>IView</code> implementation.
@@ -34,7 +35,7 @@ public class UnpureView {
 //	protected var mediatorMap:Array;
 
 	// Mapping of Notification names to Observer lists
-//	protected var observerMap:Array;
+	protected var observerMap:Array;
 
 	// Singleton instance
 	protected static var instance:UnpureView;
@@ -60,7 +61,7 @@ public class UnpureView {
 		if (instance != null) throw Error(SINGLETON_MSG);
 		instance = this;
 //		mediatorMap = new Array();
-//		observerMap = new Array();
+		observerMap = new Array();
 		initializeView();
 	}
 
@@ -106,9 +107,8 @@ public class UnpureView {
 //			observerMap[notificationName] = [observer];
 //		}
 
-//		if(){
-//
-//		}
+		facade.registerCommand(notificationName, UnpureObserverCommand);
+		UnpureObserverCommand.addObserver(notificationName, observer);
 	}
 
 	/**
@@ -171,6 +171,8 @@ public class UnpureView {
 //		if (observers.length == 0) {
 //			delete observerMap[notificationName];
 //		}
+
+		UnpureObserverCommand.removeObserver(notificationName, notifyContext);
 	}
 
 	/**
