@@ -3,6 +3,8 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
+import flash.utils.Dictionary;
+
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
 
@@ -38,12 +40,15 @@ public class UnpureModel {
 	protected var proxyMap:Array;
 
 	// Singleton instance
-	protected static var instance:UnpureModel;
-
-	private static var facade:UnpureFacade;
+	protected static var instanceRegistry:Dictionary = new Dictionary();
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Model Singleton already constructed!";
+	protected const MULTITON_MSG:String = "Model instance for this Multiton key already constructed!";
+
+	//
+	private var moduleName:String;
+	private var facade:UnpureFacade;
 
 	/**
 	 * Constructor.
@@ -57,11 +62,20 @@ public class UnpureModel {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureModel() {
-//		if (instance != null) throw Error(SINGLETON_MSG);
+	public function UnpureModel(moduleName:String = "") {
+		if (instanceRegistry[moduleName] != null) {
+			if (moduleName == "") {
+				throw Error(SINGLETON_MSG);
+			} else {
+				throw Error(MULTITON_MSG);
+			}
+		}
+		this.moduleName = moduleName;
+		instanceRegistry[moduleName] = this;
+		facade = UnpureFacade.getInstance(moduleName);
 //		instance = this;
 //		proxyMap = new Array();
-//		initializeModel();
+		initializeModel();
 	}
 
 	/**
@@ -83,12 +97,11 @@ public class UnpureModel {
 	 *
 	 * @return the Singleton instance
 	 */
-	public static function getInstance():UnpureModel {
-		if (instance == null) {
-			instance = new UnpureModel();
-			facade = UnpureFacade.getInstance();
+	public static function getInstance(moduleName:String = ""):UnpureModel {
+		if (instanceRegistry[moduleName] == null) {
+			new UnpureModel(moduleName);
 		}
-		return instance;
+		return instanceRegistry[moduleName];
 	}
 
 	/**
@@ -145,6 +158,15 @@ public class UnpureModel {
 		facade.removeProxy(proxyName);
 		return proxy;
 
+	}
+
+	/**
+	 * Remove an IModel instance
+	 *
+	 * @param multitonKey of IModel instance to remove
+	 */
+	public static function removeModel(moduleName:String):void {
+		delete instanceRegistry[moduleName];
 	}
 
 }

@@ -4,6 +4,8 @@
  */
 package org.mvcexpress.extension.unpuremvc.core {
 
+import flash.utils.Dictionary;
+
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
@@ -35,15 +37,19 @@ public class UnpureView {
 //	protected var mediatorMap:Array;
 
 	// Mapping of Notification names to Observer lists
-	protected var observerMap:Array;
+//	protected var observerMap:Array;
 
 	// Singleton instance
-	protected static var instance:UnpureView;
+	protected static var instanceRegistry:Dictionary = new Dictionary();
 
-	private static var facade:UnpureFacade;
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "View Singleton already constructed!";
+	protected const MULTITON_MSG:String = "View instance for this Multiton key already constructed!";
+
+	//
+	private var moduleName:String;
+	private var facade:UnpureFacade;
 
 	/**
 	 * Constructor.
@@ -57,11 +63,19 @@ public class UnpureView {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureView() {
-		if (instance != null) throw Error(SINGLETON_MSG);
-		instance = this;
+	public function UnpureView(moduleName:String = "") {
+		if (instanceRegistry[moduleName] != null) {
+			if (moduleName == "") {
+				throw Error(SINGLETON_MSG);
+			} else {
+				throw Error(MULTITON_MSG);
+			}
+		}
+		this.moduleName = moduleName;
+		facade = UnpureFacade.getInstance(moduleName);
+		instanceRegistry[moduleName] = this;
 //		mediatorMap = new Array();
-		observerMap = new Array();
+//		observerMap = new Array();
 		initializeView();
 	}
 
@@ -84,12 +98,11 @@ public class UnpureView {
 	 *
 	 * @return the Singleton instance of <code>View</code>
 	 */
-	public static function getInstance():UnpureView {
-		if (instance == null) {
-			instance = new UnpureView();
-			facade = UnpureFacade.getInstance();
+	public static function getInstance(moduleName:String = ""):UnpureView {
+		if (instanceRegistry[moduleName] == null) {
+			new UnpureView(moduleName);
 		}
-		return instance;
+		return instanceRegistry[moduleName];
 	}
 
 	/**
@@ -277,6 +290,14 @@ public class UnpureView {
 		return facade.hasMediator(mediatorName);
 	}
 
+	/**
+	 * Remove an IView instance
+	 *
+	 * @param multitonKey of IView instance to remove
+	 */
+	public static function removeView(moduleName:String):void {
+		delete instanceRegistry[moduleName];
+	}
 
 }
 }

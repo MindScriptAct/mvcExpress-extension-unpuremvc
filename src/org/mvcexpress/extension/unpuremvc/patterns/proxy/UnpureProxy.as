@@ -3,6 +3,7 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.patterns.proxy {
+import org.mvcexpress.core.namespace.pureLegsCore;
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.mvc.Proxy;
@@ -83,8 +84,18 @@ public class UnpureProxy extends Proxy {
 	//	class Notifier
 	//----------------------------------
 
+	private var _facade:UnpureFacade;
+
 	// Local reference to the Facade Singleton
-	protected var facade:UnpureFacade = UnpureFacade.getInstance();
+	// Return the Multiton Facade instance
+	protected function get facade():UnpureFacade {
+		if(!_facade){
+			use namespace pureLegsCore;
+			_facade = UnpureFacade.getInstance(messenger.moduleName);
+		}
+		//if (multitonKey == null) throw Error(MULTITON_MSG);
+		return _facade;
+	}
 
 	/**
 	 * Create and send an <code>INotification</code>.
