@@ -614,6 +614,7 @@ public class UnpureFacade {
 		}
 		mediatorRegistry[moduleName][mediatorName] = mediator;
 
+		mediator.initMediator(moduleName);
 		mediator.initNotificationHandling();
 		mediator.register();
 	}
