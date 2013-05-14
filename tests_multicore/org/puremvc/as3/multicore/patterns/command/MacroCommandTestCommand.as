@@ -3,6 +3,8 @@
  Your reuse is governed by Creative Commons Attribution 2.5 License
  */
 package org.puremvc.as3.multicore.patterns.command {
+import org.mvcexpress.extension.unpuremvc.patterns.command.UnpureMacroCommand;
+
 /**
  * A MacroCommand subclass used by MacroCommandTest.
  *
@@ -11,7 +13,7 @@ package org.puremvc.as3.multicore.patterns.command {
  * @see org.puremvc.as3.multicore.patterns.command.MacroCommandTestSub2Command MacroCommandTestSub2Command
  * @see org.puremvc.as3.multicore.patterns.command.MacroCommandTestVO MacroCommandTestVO
  */
-public class MacroCommandTestCommand extends MacroCommand {
+public class MacroCommandTestCommand extends UnpureMacroCommand {
 	/**
 	 * Constructor.
 	 */

@@ -6,6 +6,15 @@ package org.puremvc.as3.multicore.patterns.command {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.core.CommandMap;
+
+import org.mvcexpress.core.ProxyMap;
+
+import org.mvcexpress.core.namespace.pureLegsCore;
+
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+import org.mvcexpress.mvc.Command;
+
 /**
  * Test the PureMVC SimpleCommand class.
  *
@@ -73,10 +82,20 @@ public class MacroCommandTest extends TestCase {
 		var vo:MacroCommandTestVO = new MacroCommandTestVO(5);
 
 		// Create the Notification (note)
-		var note:INotification = new Notification('MacroCommandTest', vo);
+		var note:UnpureNotification = new UnpureNotification('MacroCommandTest', vo);
 
 		// Create the SimpleCommand
+		use namespace pureLegsCore;
+
+		Command.canConstruct = true;
 		var command:MacroCommandTestCommand = new MacroCommandTestCommand();
+		Command.canConstruct = false;
+
+		var proxyMap:ProxyMap = new ProxyMap("_test_", null);
+		command.proxyMap = proxyMap;
+
+		var commandMap:CommandMap = new CommandMap("_test_", null, proxyMap, null);
+		command.commandMap = commandMap;
 
 		// Execute the SimpleCommand
 		command.execute(note);

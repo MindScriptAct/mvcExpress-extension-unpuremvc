@@ -6,6 +6,8 @@ package org.puremvc.as3.multicore.patterns.mediator {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+
 /**
  * Test the PureMVC Mediator class.
  *
@@ -42,10 +44,10 @@ public class MediatorTest extends TestCase {
 	public function testNameAccessor():void {
 
 		// Create a new Mediator and use accessors to set the mediator name
-		var mediator:Mediator = new Mediator();
+		var mediator:UnpureMediator = new UnpureMediator();
 
 		// test assertions
-		assertTrue("Expecting mediator.getMediatorName() == Mediator.NAME", mediator.getMediatorName() == Mediator.NAME);
+		assertTrue("Expecting mediator.getMediatorName() == Mediator.NAME", mediator.getMediatorName() == UnpureMediator.NAME);
 	}
 
 	/**
@@ -57,7 +59,7 @@ public class MediatorTest extends TestCase {
 		var view:Object = new Object();
 
 		// Create a new Proxy and use accessors to set the proxy name
-		var mediator:Mediator = new Mediator(Mediator.NAME, view);
+		var mediator:UnpureMediator = new UnpureMediator(UnpureMediator.NAME, view);
 
 		// test assertions
 		assertNotNull("Expecting mediator.getViewComponent() not null", mediator.getViewComponent());

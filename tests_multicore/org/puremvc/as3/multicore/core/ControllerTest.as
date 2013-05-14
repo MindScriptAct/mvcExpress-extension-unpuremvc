@@ -6,6 +6,10 @@ package org.puremvc.as3.multicore.core {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.core.UnpureController;
+import org.mvcexpress.extension.unpuremvc.core.UnpureView;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
 /**
  * Test the PureMVC Controller class.
  *
@@ -44,11 +48,11 @@ public class ControllerTest extends TestCase {
 	public function testGetInstance():void {
 
 		// Test Factory Method
-		var controller:IController = Controller.getInstance('ControllerTestKey1');
+		var controller:UnpureController = UnpureController.getInstance('ControllerTestKey1');
 
 		// test assertions
 		assertTrue("Expecting instance not null", controller != null);
-		assertTrue("Expecting instance implements IController", controller is IController);
+		assertTrue("Expecting instance implements IController", controller is UnpureController);
 	}
 
 	/**
@@ -70,12 +74,12 @@ public class ControllerTest extends TestCase {
 	public function testRegisterAndExecuteCommand():void {
 
 		// Create the controller, register the ControllerTestCommand to handle 'ControllerTest' notes
-		var controller:IController = Controller.getInstance('ControllerTestKey2');
+		var controller:UnpureController = UnpureController.getInstance('ControllerTestKey2');
 		controller.registerCommand('ControllerTest', ControllerTestCommand);
 
 		// Create a 'ControllerTest' note
 		var vo:Object = new ControllerTestVO(12);
-		var note:Notification = new Notification('ControllerTest', vo);
+		var note:UnpureNotification = new UnpureNotification('ControllerTest', vo);
 
 		// Tell the controller to execute the Command associated with the note
 		// the ControllerTestCommand invoked will multiply the vo.input value
@@ -96,12 +100,12 @@ public class ControllerTest extends TestCase {
 	public function testRegisterAndRemoveCommand():void {
 
 		// Create the controller, register the ControllerTestCommand to handle 'ControllerTest' notes
-		var controller:IController = Controller.getInstance('ControllerTestKey3');
+		var controller:UnpureController = UnpureController.getInstance('ControllerTestKey3');
 		controller.registerCommand('ControllerRemoveTest', ControllerTestCommand);
 
 		// Create a 'ControllerTest' note
 		var vo:Object = new ControllerTestVO(12);
-		var note:Notification = new Notification('ControllerRemoveTest', vo);
+		var note:UnpureNotification = new UnpureNotification('ControllerRemoveTest', vo);
 
 		// Tell the controller to execute the Command associated with the note
 		// the ControllerTestCommand invoked will multiply the vo.input value
@@ -133,7 +137,7 @@ public class ControllerTest extends TestCase {
 	public function testHasCommand():void {
 
 		// register the ControllerTestCommand to handle 'hasCommandTest' notes
-		var controller:IController = Controller.getInstance('ControllerTestKey4');
+		var controller:UnpureController = UnpureController.getInstance('ControllerTestKey4');
 		controller.registerCommand('hasCommandTest', ControllerTestCommand);
 
 		// test that hasCommand returns true for hasCommandTest notifications
@@ -162,7 +166,7 @@ public class ControllerTest extends TestCase {
 	public function testReregisterAndExecuteCommand():void {
 
 		// Fetch the controller, register the ControllerTestCommand2 to handle 'ControllerTest2' notes
-		var controller:IController = Controller.getInstance('ControllerTestKey5');
+		var controller:UnpureController = UnpureController.getInstance('ControllerTestKey5');
 		controller.registerCommand('ControllerTest2', ControllerTestCommand2);
 
 		// Remove the Command from the Controller
@@ -173,10 +177,10 @@ public class ControllerTest extends TestCase {
 
 		// Create a 'ControllerTest2' note
 		var vo:Object = new ControllerTestVO(12);
-		var note:Notification = new Notification('ControllerTest2', vo);
+		var note:UnpureNotification = new UnpureNotification('ControllerTest2', vo);
 
 		// retrieve a reference to the View from the same core.
-		var view:IView = View.getInstance('ControllerTestKey5');
+		var view:UnpureView = UnpureView.getInstance('ControllerTestKey5');
 
 		// send the Notification
 		view.notifyObservers(note);

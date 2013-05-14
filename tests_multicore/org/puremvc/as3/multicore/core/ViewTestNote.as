@@ -3,12 +3,14 @@
  Your reuse is governed by Creative Commons Attribution 2.5 License
  */
 package org.puremvc.as3.multicore.core {
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
 /**
  * A Notification class used by ViewTest.
  *
  * @see org.puremvc.as3.multicore.core.view.ViewTest ViewTest
  */
-public class ViewTestNote extends Notification implements INotification {
+public class ViewTestNote extends UnpureNotification {
 	/**
 	 * The name of this Notification.
 	 */
@@ -35,7 +37,7 @@ public class ViewTestNote extends Notification implements INotification {
 	 * @param name the name of the Notification to be constructed.
 	 * @param body the body of the Notification to be constructed.
 	 */
-	public static function create(body:Object):INotification {
+	public static function create(body:Object):UnpureNotification {
 		return new ViewTestNote(NAME, body);
 	}
 }

@@ -3,12 +3,15 @@
  Your reuse is governed by Creative Commons Attribution 2.5 License
  */
 package org.puremvc.as3.multicore.core {
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
 /**
  * A Mediator class used by ViewTest.
  *
  * @see org.puremvc.as3.multicore.core.view.ViewTest ViewTest
  */
-public class ViewTestMediator2 extends Mediator implements IMediator {
+public class ViewTestMediator2 extends UnpureMediator {
 	/**
 	 * The Mediator name
 	 */
@@ -27,7 +30,7 @@ public class ViewTestMediator2 extends Mediator implements IMediator {
 		return [ ViewTest.NOTE1, ViewTest.NOTE2 ];
 	}
 
-	override public function handleNotification(notification:INotification):void {
+	override public function handleNotification(notification:UnpureNotification):void {
 		viewTest.lastNotification = notification.getName();
 	}
 

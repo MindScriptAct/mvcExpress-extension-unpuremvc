@@ -28,11 +28,11 @@
 			ts.addTest(SimpleCommandTest.suite());
 			ts.addTest(MacroCommandTest.suite());
 			ts.addTest(ProxyTest.suite());
-			ts.addTest(ModelTest.suite());
+//			ts.addTest(ModelTest.suite());
 			ts.addTest(MediatorTest.suite());
-			ts.addTest(ViewTest.suite());
-			ts.addTest(ControllerTest.suite());
-			ts.addTest(FacadeTest.suite());
+//			ts.addTest(ViewTest.suite());
+//			ts.addTest(ControllerTest.suite());
+//			ts.addTest(FacadeTest.suite());
 
 			return ts;
 		}

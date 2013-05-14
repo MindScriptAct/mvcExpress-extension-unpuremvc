@@ -6,6 +6,11 @@ package org.puremvc.as3.multicore.patterns.command {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.core.namespace.pureLegsCore;
+
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+import org.mvcexpress.mvc.Command;
+
 /**
  * Test the PureMVC SimpleCommand class.
  *
@@ -56,10 +61,14 @@ public class SimpleCommandTest extends TestCase {
 		var vo:SimpleCommandTestVO = new SimpleCommandTestVO(5);
 
 		// Create the Notification (note)
-		var note:Notification = new Notification('SimpleCommandTestNote', vo);
+		var note:UnpureNotification = new UnpureNotification('SimpleCommandTestNote', vo);
 
 		// Create the SimpleCommand
+		// Create the SimpleCommand
+		use namespace pureLegsCore;
+		Command.canConstruct = true;
 		var command:SimpleCommandTestCommand = new SimpleCommandTestCommand();
+		Command.canConstruct = false;
 
 		// Execute the SimpleCommand
 		command.execute(note);

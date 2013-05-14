@@ -6,6 +6,8 @@ package org.puremvc.as3.multicore.patterns.proxy {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
+
 /**
  * Test the PureMVC Proxy class.
  *
@@ -43,7 +45,7 @@ public class ProxyTest extends TestCase {
 	public function testNameAccessor():void {
 
 		// Create a new Proxy and use accessors to set the proxy name
-		var proxy:Proxy = new Proxy('TestProxy');
+		var proxy:UnpureProxy = new UnpureProxy('TestProxy');
 
 		// test assertions
 		assertTrue("Expecting proxy.getProxyName() == 'TestProxy'", proxy.getProxyName() == 'TestProxy');
@@ -55,7 +57,7 @@ public class ProxyTest extends TestCase {
 	public function testDataAccessors():void {
 
 		// Create a new Proxy and use accessors to set the data
-		var proxy:Proxy = new Proxy('colors');
+		var proxy:UnpureProxy = new UnpureProxy('colors');
 		proxy.setData(['red', 'green', 'blue']);
 		var data:Array = proxy.getData() as Array;
 
@@ -72,7 +74,7 @@ public class ProxyTest extends TestCase {
 	public function testConstructor():void {
 
 		// Create a new Proxy using the Constructor to set the name and data
-		var proxy:Proxy = new Proxy('colors', ['red', 'green', 'blue']);
+		var proxy:UnpureProxy = new UnpureProxy('colors', ['red', 'green', 'blue']);
 		var data:Array = proxy.getData() as Array;
 
 		// test assertions

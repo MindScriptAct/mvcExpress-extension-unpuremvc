@@ -3,12 +3,14 @@
  Your reuse is governed by Creative Commons Attribution 2.5 License
  */
 package org.puremvc.as3.multicore.core {
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+
 /**
  * A Mediator class used by ViewTest.
  *
  * @see org.puremvc.as3.multicore.core.view.ViewTest ViewTest
  */
-public class ViewTestMediator4 extends Mediator implements IMediator {
+public class ViewTestMediator4 extends UnpureMediator {
 	/**
 	 * The Mediator name
 	 */

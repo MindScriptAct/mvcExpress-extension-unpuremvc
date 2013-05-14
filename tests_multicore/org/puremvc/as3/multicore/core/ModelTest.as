@@ -6,6 +6,9 @@ package org.puremvc.as3.multicore.core {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.core.UnpureModel;
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
+
 /**
  * Test the PureMVC Model class.
  */
@@ -39,11 +42,11 @@ public class ModelTest extends TestCase {
 	 */
 	public function testGetInstance():void {
 		// Test Factory Method
-		var model:IModel = Model.getInstance('ModelTestKey1');
+		var model:UnpureModel = UnpureModel.getInstance('ModelTestKey1');
 
 		// test assertions
 		assertNotNull("Expecting instance not null", model);
-		assertTrue("Expecting instance implements IModel", model is IModel);
+		assertTrue("Expecting instance implements IModel", model is UnpureModel);
 	}
 
 	/**
@@ -58,9 +61,9 @@ public class ModelTest extends TestCase {
 	public function testRegisterAndRetrieveProxy():void {
 
 		// register a proxy and retrieve it.
-		var model:IModel = Model.getInstance('ModelTestKey2');
-		model.registerProxy(new Proxy('colors', ['red', 'green', 'blue']));
-		var proxy:Proxy = model.retrieveProxy('colors') as Proxy;
+		var model:UnpureModel = UnpureModel.getInstance('ModelTestKey2');
+		model.registerProxy(new UnpureProxy('colors', ['red', 'green', 'blue']));
+		var proxy:UnpureProxy = model.retrieveProxy('colors') as UnpureProxy;
 		var data:Array = proxy.getData() as Array;
 
 		// test assertions
@@ -78,12 +81,12 @@ public class ModelTest extends TestCase {
 	public function testRegisterAndRemoveProxy():void {
 
 		// register a proxy, remove it, then try to retrieve it
-		var model:IModel = Model.getInstance('ModelTestKey3');
-		var proxy:IProxy = new Proxy('sizes', ['7', '13', '21']);
+		var model:UnpureModel = UnpureModel.getInstance('ModelTestKey3');
+		var proxy:UnpureProxy = new UnpureProxy('sizes', ['7', '13', '21']);
 		model.registerProxy(proxy);
 
 		// remove the proxy
-		var removedProxy:IProxy = model.removeProxy('sizes');
+		var removedProxy:UnpureProxy = model.removeProxy('sizes');
 
 		// assert that we removed the appropriate proxy
 		assertTrue("Expecting removedProxy.getProxyName() == 'sizes'",
@@ -102,8 +105,8 @@ public class ModelTest extends TestCase {
 	public function testHasProxy():void {
 
 		// register a proxy
-		var model:IModel = Model.getInstance('ModelTestKey4');
-		var proxy:IProxy = new Proxy('aces', ['clubs', 'spades', 'hearts', 'diamonds']);
+		var model:UnpureModel = UnpureModel.getInstance('ModelTestKey4');
+		var proxy:UnpureProxy = new UnpureProxy('aces', ['clubs', 'spades', 'hearts', 'diamonds']);
 		model.registerProxy(proxy);
 
 		// assert that the model.hasProxy method returns true
@@ -126,10 +129,10 @@ public class ModelTest extends TestCase {
 	public function testOnRegisterAndOnRemove():void {
 
 		// Get a Multiton View instance
-		var model:IModel = Model.getInstance('ModelTestKey4');
+		var model:UnpureModel = UnpureModel.getInstance('ModelTestKey4');
 
 		// Create and register the test mediator
-		var proxy:IProxy = new ModelTestProxy();
+		var proxy:UnpureProxy = new ModelTestProxy();
 		model.registerProxy(proxy);
 
 		// assert that onRegsiter was called, and the proxy responded by setting its data accordingly

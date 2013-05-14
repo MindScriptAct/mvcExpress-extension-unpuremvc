@@ -1,5 +1,7 @@
 package org.puremvc.as3.multicore.core {
-public class ModelTestProxy extends Proxy {
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
+
+public class ModelTestProxy extends UnpureProxy {
 	public static const NAME:String = 'ModelTestProxy';
 	public static const ON_REGISTER_CALLED:String = 'onRegister Called';
 	public static const ON_REMOVE_CALLED:String = 'onRemove Called';
@@ -8,11 +10,11 @@ public class ModelTestProxy extends Proxy {
 		super(NAME, '');
 	}
 
-	override public function onRegister():void {
+	override protected function onRegister():void {
 		setData(ON_REGISTER_CALLED);
 	}
 
-	override public function onRemove():void {
+	override protected function onRemove():void {
 		setData(ON_REMOVE_CALLED);
 	}
 }

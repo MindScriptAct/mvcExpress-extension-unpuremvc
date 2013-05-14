@@ -6,6 +6,12 @@ package org.puremvc.as3.multicore.core {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.core.UnpureView;
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
+
 /**
  * Test the PureMVC View class.
  */
@@ -61,11 +67,11 @@ public class ViewTest extends TestCase {
 	public function testGetInstance():void {
 
 		// Test Factory Method
-		var view:IView = View.getInstance('ViewTestKey1');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey1');
 
 		// test assertions
 		assertTrue("Expecting instance not null", view != null);
-		assertTrue("Expecting instance implements IView", view is IView);
+		assertTrue("Expecting instance implements IView", view is UnpureView);
 
 	}
 
@@ -93,10 +99,10 @@ public class ViewTest extends TestCase {
 	public function testRegisterAndNotifyObserver():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey2');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey2');
 
 		// Create observer, passing in notification method and context
-		var observer:Observer = new Observer(viewTestMethod, this);
+		var observer:UnpureObserver = new UnpureObserver(viewTestMethod, this);
 
 		// Register Observer's interest in a particulat Notification with the View
 		view.registerObserver(ViewTestNote.NAME, observer);
@@ -108,7 +114,7 @@ public class ViewTest extends TestCase {
 		// successful notification will result in our local
 		// viewTestVar being set to the value we pass in
 		// on the note body.
-		var note:INotification = ViewTestNote.create(10);
+		var note:UnpureNotification = ViewTestNote.create(10);
 		view.notifyObservers(note);
 
 		// test assertions
@@ -124,7 +130,7 @@ public class ViewTest extends TestCase {
 	/**
 	 * A utility method to test the notification of Observers by the view
 	 */
-	private function viewTestMethod(note:INotification):void {
+	private function viewTestMethod(note:UnpureNotification):void {
 		// set the local viewTestVar to the number on the event payload
 		viewTestVar = note.getBody() as Number;
 	}
@@ -136,14 +142,14 @@ public class ViewTest extends TestCase {
 	public function testRegisterAndRetrieveMediator():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey3');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey3');
 
 		// Create and register the test mediator
 		var viewTestMediator:ViewTestMediator = new ViewTestMediator(this);
 		view.registerMediator(viewTestMediator);
 
 		// Retrieve the component
-		var mediator:IMediator = view.retrieveMediator(ViewTestMediator.NAME) as IMediator;
+		var mediator:UnpureMediator = view.retrieveMediator(ViewTestMediator.NAME) as UnpureMediator;
 
 		// test assertions
 		assertTrue("Expecting comp is ViewTestMediator", mediator is ViewTestMediator);
@@ -156,10 +162,10 @@ public class ViewTest extends TestCase {
 	public function testHasMediator():void {
 
 		// register a Mediator
-		var view:IView = View.getInstance('ViewTestKey4');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey4');
 
 		// Create and register the test mediator
-		var mediator:Mediator = new Mediator('hasMediatorTest', this);
+		var mediator:UnpureMediator = new UnpureMediator('hasMediatorTest', this);
 		view.registerMediator(mediator);
 
 		// assert that the view.hasMediator method returns true
@@ -182,14 +188,14 @@ public class ViewTest extends TestCase {
 	public function testRegisterAndRemoveMediator():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey5');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey5');
 
 		// Create and register the test mediator
-		var mediator:IMediator = new Mediator('testing', this);
+		var mediator:UnpureMediator = new UnpureMediator('testing', this);
 		view.registerMediator(mediator);
 
 		// Remove the component
-		var removedMediator:IMediator = view.removeMediator('testing') as IMediator;
+		var removedMediator:UnpureMediator = view.removeMediator('testing') as UnpureMediator;
 
 		// assert that we have removed the appropriate mediator
 		assertTrue("Expecting removedMediator.getMediatorName() == 'testing'",
@@ -207,10 +213,10 @@ public class ViewTest extends TestCase {
 	public function testOnRegisterAndOnRemove():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey6');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey6');
 
 		// Create and register the test mediator
-		var mediator:IMediator = new ViewTestMediator4(this);
+		var mediator:UnpureMediator = new ViewTestMediator4(this);
 		view.registerMediator(mediator);
 
 		// assert that onRegsiter was called, and the mediator responded by setting our boolean
@@ -219,7 +225,7 @@ public class ViewTest extends TestCase {
 
 
 		// Remove the component
-		view.removeMediator(ViewTestMediator4.NAME) as IMediator;
+		view.removeMediator(ViewTestMediator4.NAME) as UnpureMediator;
 
 		// assert that the mediator is no longer retrievable
 		assertTrue("Expecting onRemoveCalled == true",
@@ -234,7 +240,7 @@ public class ViewTest extends TestCase {
 	public function testSuccessiveRegisterAndRemoveMediator():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey7');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey7');
 
 		// Create and register the test mediator,
 		// but not so we have a reference to it
@@ -278,17 +284,17 @@ public class ViewTest extends TestCase {
 	public function testRemoveMediatorAndSubsequentNotify():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey8');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey8');
 
 		// Create and register the test mediator to be removed.
 		view.registerMediator(new ViewTestMediator2(this));
 
 		// test that notifications work
-		view.notifyObservers(new Notification(NOTE1));
+		view.notifyObservers(new UnpureNotification(NOTE1));
 		assertTrue("Expecting lastNotification == NOTE1",
 				lastNotification == NOTE1);
 
-		view.notifyObservers(new Notification(NOTE2));
+		view.notifyObservers(new UnpureNotification(NOTE2));
 		assertTrue("Expecting lastNotification == NOTE2",
 				lastNotification == NOTE2);
 
@@ -304,11 +310,11 @@ public class ViewTest extends TestCase {
 		// on this component, and ViewTestMediator)
 		lastNotification = null;
 
-		view.notifyObservers(new Notification(NOTE1));
+		view.notifyObservers(new UnpureNotification(NOTE1));
 		assertTrue("Expecting lastNotification != NOTE1",
 				lastNotification != NOTE1);
 
-		view.notifyObservers(new Notification(NOTE2));
+		view.notifyObservers(new UnpureNotification(NOTE2));
 		assertTrue("Expecting lastNotification != NOTE2",
 				lastNotification != NOTE2);
 
@@ -322,7 +328,7 @@ public class ViewTest extends TestCase {
 	public function testRemoveOneOfTwoMediatorsAndSubsequentNotify():void {
 
 		// Get the Multiton View instance
-		var view:IView = View.getInstance('ViewTestKey9');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey9');
 
 		// Create and register that responds to notifications 1 and 2
 		view.registerMediator(new ViewTestMediator2(this));
@@ -331,15 +337,15 @@ public class ViewTest extends TestCase {
 		view.registerMediator(new ViewTestMediator3(this));
 
 		// test that all notifications work
-		view.notifyObservers(new Notification(NOTE1));
+		view.notifyObservers(new UnpureNotification(NOTE1));
 		assertTrue("Expecting lastNotification == NOTE1",
 				lastNotification == NOTE1);
 
-		view.notifyObservers(new Notification(NOTE2));
+		view.notifyObservers(new UnpureNotification(NOTE2));
 		assertTrue("Expecting lastNotification == NOTE2",
 				lastNotification == NOTE2);
 
-		view.notifyObservers(new Notification(NOTE3));
+		view.notifyObservers(new UnpureNotification(NOTE3));
 		assertTrue("Expecting lastNotification == NOTE3",
 				lastNotification == NOTE3);
 
@@ -354,15 +360,15 @@ public class ViewTest extends TestCase {
 		// for notifications 1 and 2, but still work for 3
 		lastNotification = null;
 
-		view.notifyObservers(new Notification(NOTE1));
+		view.notifyObservers(new UnpureNotification(NOTE1));
 		assertTrue("Expecting lastNotification != NOTE1",
 				lastNotification != NOTE1);
 
-		view.notifyObservers(new Notification(NOTE2));
+		view.notifyObservers(new UnpureNotification(NOTE2));
 		assertTrue("Expecting lastNotification != NOTE2",
 				lastNotification != NOTE2);
 
-		view.notifyObservers(new Notification(NOTE3));
+		view.notifyObservers(new UnpureNotification(NOTE3));
 		assertTrue("Expecting lastNotification == NOTE3",
 				lastNotification == NOTE3);
 
@@ -381,7 +387,7 @@ public class ViewTest extends TestCase {
 	public function testMediatorReregistration():void {
 
 		// Get the Singleton View instance
-		var view:IView = View.getInstance('ViewTestKey10');
+		var view:UnpureView = UnpureView.getInstance('ViewTestKey10');
 
 		// Create and register that responds to notification 5
 		view.registerMediator(new ViewTestMediator5(this));
@@ -391,7 +397,7 @@ public class ViewTest extends TestCase {
 
 		// test that the counter is only incremented once (mediator 5's response)
 		counter = 0;
-		view.notifyObservers(new Notification(NOTE5));
+		view.notifyObservers(new UnpureNotification(NOTE5));
 		assertEquals("Expecting counter == 1", 1, counter);
 
 		// Remove the Mediator
@@ -403,7 +409,7 @@ public class ViewTest extends TestCase {
 
 		// test that the counter is no longer incremented
 		counter = 0;
-		view.notifyObservers(new Notification(NOTE5));
+		view.notifyObservers(new UnpureNotification(NOTE5));
 		assertEquals("Expecting counter == 0", 0, counter);
 	}
 
@@ -421,7 +427,7 @@ public class ViewTest extends TestCase {
 	public function testModifyObserverListDuringNotification():void {
 
 		// Get the Singleton View instance
-		var view:IView = View.getInstance('ViewTestKey11');
+		var view:UnpureView =UnpureView.getInstance('ViewTestKey11');
 
 		// Create and register several mediator instances that respond to notification 6
 		// by removing themselves, which will cause the observer list for that notification
@@ -441,13 +447,13 @@ public class ViewTest extends TestCase {
 		// send the notification. each of the above mediators will respond by removing
 		// themselves and incrementing the counter by 1. This should leave us with a
 		// count of 8, since 8 mediators will respond.
-		view.notifyObservers(new Notification(NOTE6));
+		view.notifyObservers(new UnpureNotification(NOTE6));
 		// verify the count is correct
 		assertEquals("Expecting counter == 8", 8, counter);
 
 		// clear the counter
 		counter = 0;
-		view.notifyObservers(new Notification(NOTE6));
+		view.notifyObservers(new UnpureNotification(NOTE6));
 		// verify the count is 0
 		assertEquals("Expecting counter == 0", 0, counter);
 

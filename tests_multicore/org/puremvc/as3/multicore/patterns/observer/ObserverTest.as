@@ -6,6 +6,9 @@ package org.puremvc.as3.multicore.patterns.observer {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureObserver;
+
 /**
  * Tests PureMVC Observer class.
  *
@@ -53,7 +56,7 @@ public class ObserverTest extends TestCase {
 
 		// Create observer with null args, then
 		// use accessors to set notification method and context
-		var observer:Observer = new Observer(null, null);
+		var observer:UnpureObserver = new UnpureObserver(null, null);
 		observer.setNotifyContext(this);
 		observer.setNotifyMethod(observerTestMethod);
 
@@ -63,7 +66,7 @@ public class ObserverTest extends TestCase {
 		// successful notification will result in our local
 		// observerTestVar being set to the value we pass in
 		// on the note body.
-		var note:Notification = new Notification('ObserverTestNote', 10);
+		var note:UnpureNotification = new UnpureNotification('ObserverTestNote', 10);
 		observer.notifyObserver(note);
 
 		// test assertions
@@ -77,7 +80,7 @@ public class ObserverTest extends TestCase {
 	public function testObserverConstructor():void {
 
 		// Create observer passing in notification method and context
-		var observer:Observer = new Observer(observerTestMethod, this);
+		var observer:UnpureObserver = new UnpureObserver(observerTestMethod, this);
 
 		// create a test note, setting a body value and notify
 		// the observer with it. since the observer is this class
@@ -85,7 +88,7 @@ public class ObserverTest extends TestCase {
 		// successful notification will result in our local
 		// observerTestVar being set to the value we pass in
 		// on the note body.
-		var note:Notification = new Notification('ObserverTestNote', 5);
+		var note:UnpureNotification = new UnpureNotification('ObserverTestNote', 5);
 		observer.notifyObserver(note);
 
 		// test assertions
@@ -99,7 +102,7 @@ public class ObserverTest extends TestCase {
 	public function testCompareNotifyContext():void {
 
 		// Create observer passing in notification method and context
-		var observer:Observer = new Observer(observerTestMethod, this);
+		var observer:UnpureObserver = new UnpureObserver(observerTestMethod, this);
 
 		var negTestObj:Object = new Object();
 
@@ -119,7 +122,7 @@ public class ObserverTest extends TestCase {
 	 * method. It multiplies the input number by the
 	 * observerTestVar value
 	 */
-	private function observerTestMethod(note:INotification):void {
+	private function observerTestMethod(note:UnpureNotification):void {
 		observerTestVar = note.getBody() as Number;
 	}
 

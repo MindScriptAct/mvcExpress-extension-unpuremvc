@@ -6,6 +6,8 @@ package org.puremvc.as3.multicore.patterns.observer {
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
 /**
  * Test the PureMVC Notification class.
  *
@@ -43,7 +45,7 @@ public class NotificationTest extends TestCase {
 	public function testNameAccessors():void {
 
 		// Create a new Notification and use accessors to set the note name
-		var note:INotification = new Notification('TestNote');
+		var note:UnpureNotification = new UnpureNotification('TestNote');
 
 		// test assertions
 		assertTrue("Expecting note.getName() == 'TestNote'", note.getName() == 'TestNote');
@@ -55,7 +57,7 @@ public class NotificationTest extends TestCase {
 	public function testBodyAccessors():void {
 
 		// Create a new Notification and use accessors to set the body
-		var note:INotification = new Notification(null);
+		var note:UnpureNotification = new UnpureNotification(null);
 		note.setBody(5);
 
 		// test assertions
@@ -68,7 +70,7 @@ public class NotificationTest extends TestCase {
 	public function testConstructor():void {
 
 		// Create a new Notification using the Constructor to set the note name and body
-		var note:INotification = new Notification('TestNote', 5, 'TestNoteType');
+		var note:UnpureNotification = new UnpureNotification('TestNote', 5, 'TestNoteType');
 
 		// test assertions
 		assertTrue("Expecting note.getName() == 'TestNote'", note.getName() == 'TestNote');
@@ -82,7 +84,7 @@ public class NotificationTest extends TestCase {
 	public function testToString():void {
 
 		// Create a new Notification and use accessors to set the note name
-		var note:INotification = new Notification('TestNote', [1, 3, 5], 'TestType');
+		var note:UnpureNotification = new UnpureNotification('TestNote', [1, 3, 5], 'TestType');
 		var ts:String = "Notification Name: TestNote\nBody:1,3,5\nType:TestType";
 
 		// test assertions

@@ -3,13 +3,16 @@
  Your reuse is governed by Creative Commons Attribution 2.5 License
  */
 package org.puremvc.as3.multicore.core {
+import org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand;
+import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
+
 /**
  * A SimpleCommand subclass used by ControllerTest.
  *
  * @see org.puremvc.as3.multicore.core.controller.ControllerTest ControllerTest
  * @see org.puremvc.as3.multicore.core.controller.ControllerTestVO ControllerTestVO
  */
-public class ControllerTestCommand2 extends SimpleCommand {
+public class ControllerTestCommand2 extends UnpureSimpleCommand {
 
 	/**
 	 * Constructor.
@@ -24,7 +27,7 @@ public class ControllerTestCommand2 extends SimpleCommand {
 	 * This tests accumulation effect that would show if the command were executed more than once.
 	 * @param note the note carrying the ControllerTestVO
 	 */
-	override public function execute(note:INotification):void {
+	override public function execute(note:UnpureNotification):void {
 
 		var vo:ControllerTestVO = note.getBody() as ControllerTestVO;
 
