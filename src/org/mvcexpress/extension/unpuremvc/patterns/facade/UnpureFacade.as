@@ -19,7 +19,7 @@ import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
 
 /**
- * A base Singleton <code>IFacade</code> implementation.
+ * A base Singleton/Multiton <code>IFacade</code> implementation.
  *
  * <P>
  * In PureMVC, the <code>Facade</code> class assumes these
@@ -147,26 +147,6 @@ public class UnpureFacade {
 	protected var proxyMap:ProxyMap;
 	protected var mediatorMap:MediatorMap;
 	protected var commandMap:CommandMap;
-
-	/**
-	 * CONSTRUCTOR
-	 * @param    moduleName    module name that is used for referencing a module. (if not provided - unique name will be generated.)
-	 * @param    autoInit    if set to false framework is not initialized for this module. If you want to use framework features you will have to manually init() it first.
-	 */
-//	public function ModuleFacade(moduleName:String = null, autoInit:Boolean = true) {
-//		//
-//		use namespace pureLegsCore;
-//
-//		moduleBase = ModuleManager.createModule(moduleName, autoInit);
-//		//
-//		if (autoInit) {
-//			proxyMap = moduleBase.proxyMap;
-//			mediatorMap = moduleBase.mediatorMap;
-//			commandMap = moduleBase.commandMap;
-//
-//			onInit();
-//		}
-//	}
 
 	/**
 	 * Name of the module
@@ -297,9 +277,9 @@ public class UnpureFacade {
 	//
 	//----------------------------------
 
-	static private var commandRegistry:Dictionary = new Dictionary();
-	static private var proxyRegistry:Dictionary = new Dictionary();
-	static private var mediatorRegistry:Dictionary = new Dictionary();
+	static private var $commandRegistry:Dictionary = new Dictionary();
+	static private var $proxyRegistry:Dictionary = new Dictionary();
+	static private var $mediatorRegistry:Dictionary = new Dictionary();
 
 	public function getModuleName():String {
 		return moduleName;
@@ -309,13 +289,13 @@ public class UnpureFacade {
 		return mediatorMap;
 	}
 
-	public function getMessender():Messenger {
+	pureLegsCore function getMessender():Messenger {
 		use namespace pureLegsCore;
 
 		return moduleBase.messenger;
 	}
 
-	public function getProxyMap():ProxyMap {
+	pureLegsCore function getProxyMap():ProxyMap {
 		return proxyMap;
 	}
 
@@ -350,7 +330,7 @@ public class UnpureFacade {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureFacade(moduleName:String = "") {
+	public function UnpureFacade(moduleName:String = "$_SINGLECORE_$") {
 //		if (instance != null) throw Error(SINGLETON_MSG);
 //		instance = this;
 //		initializeFacade();
@@ -364,20 +344,21 @@ public class UnpureFacade {
 		}
 		instanceRegistry[moduleName] = this;
 
+		// init module
 		use namespace pureLegsCore;
 
 		moduleBase = ModuleManager.createModule(moduleName, true);
 		//
-		//if (true) {
-			proxyMap = moduleBase.proxyMap;
-			mediatorMap = moduleBase.mediatorMap;
-			commandMap = moduleBase.commandMap;
 
-			onInit();
-		//}
+		proxyMap = moduleBase.proxyMap;
+		mediatorMap = moduleBase.mediatorMap;
+		commandMap = moduleBase.commandMap;
 
+		// init facade
 		initializeFacade();
 
+		// triger onInit
+		onInit();
 	}
 
 	/**
@@ -399,12 +380,12 @@ public class UnpureFacade {
 	 *
 	 * @return the Singleton instance of the Facade
 	 */
-	public static function getInstance(moduleName:String = ""):UnpureFacade {
+	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureFacade {
 		if (instanceRegistry[moduleName] == null) {
 			new UnpureFacade(moduleName);
-			commandRegistry[moduleName] = new Dictionary();
-			proxyRegistry[moduleName] = new Dictionary();
-			mediatorRegistry[moduleName] = new Dictionary();
+			$commandRegistry[moduleName] = new Dictionary();
+			$proxyRegistry[moduleName] = new Dictionary();
+			$mediatorRegistry[moduleName] = new Dictionary();
 		}
 		return instanceRegistry[moduleName];
 	}
@@ -495,12 +476,12 @@ public class UnpureFacade {
 	public function registerCommand(notificationName:String, commandClassRef:Class):void {
 //		controller.registerCommand(notificationName, commandClassRef);
 
-		if (commandRegistry[moduleName][notificationName]) {
-			trace("Unpure error! : unpuremvc cant manage 2 commands on same notification:" + notificationName + " Old command:" + commandRegistry[moduleName][notificationName] + " will be unmapped, and changed with:" + commandClassRef);
-			commandMap.unmap(notificationName, commandRegistry[moduleName][notificationName]);
-			commandRegistry[moduleName][notificationName] = null;
+		if ($commandRegistry[moduleName][notificationName]) {
+			trace("Unpure error! : unpuremvc cant manage 2 commands on same notification:" + notificationName + " Old command:" + $commandRegistry[moduleName][notificationName] + " will be unmapped, and changed with:" + commandClassRef);
+			commandMap.unmap(notificationName, $commandRegistry[moduleName][notificationName]);
+			$commandRegistry[moduleName][notificationName] = null;
 		}
-		commandRegistry[moduleName][notificationName] = commandClassRef;
+		$commandRegistry[moduleName][notificationName] = commandClassRef;
 		commandMap.map(notificationName, commandClassRef);
 	}
 
@@ -512,8 +493,8 @@ public class UnpureFacade {
 	public function removeCommand(notificationName:String):void {
 //		controller.removeCommand(notificationName);
 
-		if (commandRegistry[moduleName][notificationName]) {
-			commandMap.unmap(notificationName, commandRegistry[moduleName][notificationName]);
+		if ($commandRegistry[moduleName][notificationName]) {
+			commandMap.unmap(notificationName, $commandRegistry[moduleName][notificationName]);
 		}
 	}
 
@@ -539,13 +520,13 @@ public class UnpureFacade {
 //		model.registerProxy(proxy);
 
 		var proxyName:String = proxy.getProxyName();
-		var oldProxy:Object = proxyRegistry[moduleName][proxyName];
+		var oldProxy:Object = $proxyRegistry[moduleName][proxyName];
 		if (oldProxy) {
-			trace("Unpure error! : 2 proxies with same name!:" + proxyName + " Old proxy will be removed:" + proxyRegistry[moduleName][proxyName] + ", new proxy:" + proxy);
+			trace("Unpure error! : 2 proxies with same name!:" + proxyName + " Old proxy will be removed:" + $proxyRegistry[moduleName][proxyName] + ", new proxy:" + proxy);
 			proxyMap.unmap(oldProxy.constructor, proxyName);
-			proxyRegistry[moduleName][proxyName] = null;
+			$proxyRegistry[moduleName][proxyName] = null;
 		}
-		proxyRegistry[moduleName][proxyName] = proxy;
+		$proxyRegistry[moduleName][proxyName] = proxy;
 		proxyMap.map(proxy, (proxy as Object).constructor, proxyName);
 	}
 
@@ -558,7 +539,7 @@ public class UnpureFacade {
 	public function retrieveProxy(proxyName:String):UnpureProxy {
 		//return model.retrieveProxy(proxyName);
 
-		return proxyRegistry[moduleName][proxyName];
+		return $proxyRegistry[moduleName][proxyName];
 	}
 
 	/**
@@ -572,11 +553,11 @@ public class UnpureFacade {
 //		if (model != null) proxy = model.removeProxy(proxyName);
 //		return proxy
 
-		var proxy:UnpureProxy = proxyRegistry[moduleName][proxyName];
+		var proxy:UnpureProxy = $proxyRegistry[moduleName][proxyName];
 		//if (model != null) proxy = model.removeProxy(proxyName);
 		if (proxy) {
 			proxyMap.unmap((proxy as Object).constructor, proxyName);
-			proxyRegistry[moduleName][proxyName] = null;
+			$proxyRegistry[moduleName][proxyName] = null;
 		}
 		return proxy;
 
@@ -591,7 +572,7 @@ public class UnpureFacade {
 	public function hasProxy(proxyName:String):Boolean {
 //		return model.hasProxy(proxyName);
 
-		return (proxyRegistry[moduleName][proxyName] != null);
+		return ($proxyRegistry[moduleName][proxyName] != null);
 	}
 
 	/**
@@ -606,13 +587,13 @@ public class UnpureFacade {
 		use namespace pureLegsCore;
 
 		var mediatorName:String = mediator.getMediatorName();
-		var oldMediator:UnpureMediator = mediatorRegistry[moduleName][mediatorName];
+		var oldMediator:UnpureMediator = $mediatorRegistry[moduleName][mediatorName];
 		if (oldMediator) {
 			trace("Unpure error! : 2 mediators with same name!:" + mediatorName + " Old mediator will be removed:" + oldMediator + ", new mediator:" + mediator);
 			oldMediator.remove();
-			mediatorRegistry[moduleName][mediatorName] = null;
+			$mediatorRegistry[moduleName][mediatorName] = null;
 		}
-		mediatorRegistry[moduleName][mediatorName] = mediator;
+		$mediatorRegistry[moduleName][mediatorName] = mediator;
 
 		mediator.initMediator(moduleName);
 		mediator.initNotificationHandling();
@@ -628,7 +609,7 @@ public class UnpureFacade {
 	public function retrieveMediator(mediatorName:String):UnpureMediator {
 //		return view.retrieveMediator(mediatorName) as UnpureMediator;
 
-		return mediatorRegistry[moduleName][mediatorName];
+		return $mediatorRegistry[moduleName][mediatorName];
 	}
 
 	/**
@@ -644,10 +625,10 @@ public class UnpureFacade {
 
 		use namespace pureLegsCore;
 
-		var mediator:UnpureMediator = mediatorRegistry[moduleName][mediatorName]
+		var mediator:UnpureMediator = $mediatorRegistry[moduleName][mediatorName]
 		if (mediator) {
 			mediator.remove();
-			mediatorRegistry[moduleName][mediatorName] = null;
+			$mediatorRegistry[moduleName][mediatorName] = null;
 		}
 		return mediator;
 	}
@@ -661,7 +642,7 @@ public class UnpureFacade {
 	public function hasMediator(mediatorName:String):Boolean {
 //		return view.hasMediator(mediatorName);
 
-		return (mediatorRegistry[moduleName][mediatorName] != null);
+		return ($mediatorRegistry[moduleName][mediatorName] != null);
 	}
 
 	/**
@@ -698,6 +679,20 @@ public class UnpureFacade {
 
 		sendMessage(notification.getType(), notification);
 	}
+
+	/**
+	 * Set the Multiton key for this facade instance.
+	 * <P>
+	 * Not called directly, but instead from the
+	 * constructor when getInstance is invoked.
+	 * It is necessary to be public in order to
+	 * implement INotifier.</P>
+	 */
+	public function initializeNotifier(key:String):void {
+		//multitonKey = key;
+		trace("Error?! Unpure extention does not handle this function. use UnpureFacade.getInstance(key) to set key(moduleName) instead.")
+	}
+
 
 	/**
 	 * Check if a Core is registered or not

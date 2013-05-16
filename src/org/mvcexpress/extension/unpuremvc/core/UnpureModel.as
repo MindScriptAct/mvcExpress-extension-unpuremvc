@@ -62,7 +62,7 @@ public class UnpureModel {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureModel(moduleName:String = "") {
+	public function UnpureModel(moduleName:String = "$_SINGLECORE_$") {
 		if (instanceRegistry[moduleName] != null) {
 			if (moduleName == "") {
 				throw Error(SINGLETON_MSG);
@@ -97,7 +97,7 @@ public class UnpureModel {
 	 *
 	 * @return the Singleton instance
 	 */
-	public static function getInstance(moduleName:String = ""):UnpureModel {
+	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureModel {
 		if (instanceRegistry[moduleName] == null) {
 			new UnpureModel(moduleName);
 		}

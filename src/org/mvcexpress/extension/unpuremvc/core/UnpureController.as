@@ -73,7 +73,7 @@ public class UnpureController {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureController(moduleName:String = "") {
+	public function UnpureController(moduleName:String = "$_SINGLECORE_$") {
 		if (instanceRegistry[moduleName] != null) {
 			if (moduleName == "") {
 				throw Error(SINGLETON_MSG);
@@ -117,7 +117,7 @@ public class UnpureController {
 	 *
 	 * @return the Singleton instance of <code>Controller</code>
 	 */
-	public static function getInstance(moduleName:String = ""):UnpureController {
+	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureController {
 		if (instanceRegistry[moduleName] == null) {
 			new UnpureController(moduleName);
 		}

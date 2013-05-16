@@ -89,8 +89,9 @@ public class UnpureProxy extends Proxy {
 	// Local reference to the Facade Singleton
 	// Return the Multiton Facade instance
 	protected function get facade():UnpureFacade {
-		if(!_facade){
+		if (!_facade) {
 			use namespace pureLegsCore;
+
 			_facade = UnpureFacade.getInstance(messenger.moduleName);
 		}
 		//if (multitonKey == null) throw Error(MULTITON_MSG);

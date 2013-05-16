@@ -45,13 +45,13 @@ public class UnpureMediator extends Mediator {
 		Mediator.canConstruct = false;
 
 
-
 		this.mediatorName = (mediatorName != null) ? mediatorName : NAME;
 		this.viewComponent = viewComponent;
 	}
 
 	pureLegsCore function initMediator(moduleName:String):void {
 		use namespace pureLegsCore;
+
 		this.moduleName = moduleName;
 		moduleName = facade.getModuleName();
 		messenger = facade.getMessender();
@@ -145,8 +145,9 @@ public class UnpureMediator extends Mediator {
 	// Local reference to the Facade Singleton
 	// Return the Multiton Facade instance
 	protected function get facade():UnpureFacade {
-		if(!_facade){
+		if (!_facade) {
 			use namespace pureLegsCore;
+
 			_facade = UnpureFacade.getInstance(this.moduleName);
 		}
 		//if (multitonKey == null) throw Error(MULTITON_MSG);

@@ -5,7 +5,6 @@
 package org.mvcexpress.extension.unpuremvc.patterns.command {
 
 import org.mvcexpress.core.namespace.pureLegsCore;
-import org.mvcexpress.extension.unpuremvc.patterns.command.UnpureSimpleCommand;
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.UnpureNotification;
 import org.mvcexpress.mvc.Command;
@@ -47,8 +46,9 @@ public class UnpureSimpleCommand extends Command implements UnpureICommand {
 	// Local reference to the Facade Singleton
 	// Return the Multiton Facade instance
 	protected function get facade():UnpureFacade {
-		if(!_facade){
+		if (!_facade) {
 			use namespace pureLegsCore;
+
 			_facade = UnpureFacade.getInstance(messenger.moduleName);
 		}
 		//if (multitonKey == null) throw Error(MULTITON_MSG);

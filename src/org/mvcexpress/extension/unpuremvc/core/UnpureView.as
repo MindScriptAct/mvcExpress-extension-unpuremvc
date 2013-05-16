@@ -63,7 +63,7 @@ public class UnpureView {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureView(moduleName:String = "") {
+	public function UnpureView(moduleName:String = "$_SINGLECORE_$") {
 		if (instanceRegistry[moduleName] != null) {
 			if (moduleName == "") {
 				throw Error(SINGLETON_MSG);
@@ -72,8 +72,8 @@ public class UnpureView {
 			}
 		}
 		this.moduleName = moduleName;
-		facade = UnpureFacade.getInstance(moduleName);
 		instanceRegistry[moduleName] = this;
+		facade = UnpureFacade.getInstance(moduleName);
 //		mediatorMap = new Array();
 //		observerMap = new Array();
 		initializeView();
@@ -98,7 +98,7 @@ public class UnpureView {
 	 *
 	 * @return the Singleton instance of <code>View</code>
 	 */
-	public static function getInstance(moduleName:String = ""):UnpureView {
+	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureView {
 		if (instanceRegistry[moduleName] == null) {
 			new UnpureView(moduleName);
 		}
