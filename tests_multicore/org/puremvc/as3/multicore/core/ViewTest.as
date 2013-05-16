@@ -259,7 +259,7 @@ public class ViewTest extends TestCase {
 
 		// test that removing the mediator again once its gone doesn't cause crash
 		assertTrue("Expecting view.removeMediator( ViewTestMediator.NAME ) doesn't crash",
-				view.removeMediator(ViewTestMediator.NAME) == void);
+				view.removeMediator(ViewTestMediator.NAME) == null);
 
 		// Create and register another instance of the test mediator,
 		view.registerMediator(new ViewTestMediator(this));

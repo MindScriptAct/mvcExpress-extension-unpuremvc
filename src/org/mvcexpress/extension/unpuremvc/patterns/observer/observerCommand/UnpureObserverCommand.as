@@ -11,11 +11,11 @@ import org.mvcexpress.mvc.PooledCommand;
  */
 public class UnpureObserverCommand extends PooledCommand {
 
-	private static var observerRegistry:Dictionary = new Dictionary();
+	private static var $observerRegistry:Dictionary = new Dictionary();
 
 	public function execute(notification:UnpureNotification):void {
 		// Get a reference to the observers list for this notification name
-		var observers_ref:Array = observerRegistry[notification.getName()];
+		var observers_ref:Array = $observerRegistry[notification.getName()];
 		if (observers_ref) {
 
 			// Copy observers from reference array to working array,
@@ -37,16 +37,16 @@ public class UnpureObserverCommand extends PooledCommand {
 	}
 
 	public static function addObserver(notificationName:String, observer:UnpureObserver):void {
-		var observers:Array = observerRegistry[notificationName];
+		var observers:Array = $observerRegistry[notificationName];
 		if (observers) {
 			observers.push(observer);
 		} else {
-			observerRegistry[notificationName] = [observer];
+			$observerRegistry[notificationName] = [observer];
 		}
 	}
 
 	public static function removeObserver(notificationName:String, notifyContext:Object):void {
-		var observers:Array = observerRegistry[notificationName];
+		var observers:Array = $observerRegistry[notificationName];
 		if (observers) {
 			for (var i:int = 0; i < observers.length; i++) {
 				if (observers[i].getNotifyContext() == notifyContext) {

@@ -3,6 +3,8 @@
  Your reuse is governed by the Creative Commons Attribution 3.0 United States License
  */
 package org.mvcexpress.extension.unpuremvc.core {
+import flash.utils.Dictionary;
+
 import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
 import org.mvcexpress.extension.unpuremvc.patterns.observer.*;
 
@@ -48,12 +50,16 @@ public class UnpureController {
 //	protected var commandMap:Array;
 
 	// Singleton instance
-	protected static var instance:UnpureController;
-
-	private static var facade:UnpureFacade;
+	protected static var instanceRegistry:Dictionary = new Dictionary();
 
 	// Message Constants
 	protected const SINGLETON_MSG:String = "Controller Singleton already constructed!";
+	protected const MULTITON_MSG:String = "Controller instance for this Multiton key already constructed!";
+
+	//
+	private var facade:UnpureFacade;
+	private var moduleName:String;
+
 
 	/**
 	 * Constructor.
@@ -67,9 +73,17 @@ public class UnpureController {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureController() {
-		if (instance != null) throw Error(SINGLETON_MSG);
-		instance = this;
+	public function UnpureController(moduleName:String = "$_SINGLECORE_$") {
+		if (instanceRegistry[moduleName] != null) {
+			if (moduleName == "") {
+				throw Error(SINGLETON_MSG);
+			} else {
+				throw Error(MULTITON_MSG);
+			}
+		}
+		instanceRegistry[moduleName] = this;
+		this.moduleName = moduleName;
+		facade = UnpureFacade.getInstance(moduleName);
 //		commandMap = new Array();
 		initializeController();
 	}
@@ -95,7 +109,7 @@ public class UnpureController {
 	 * @return void
 	 */
 	protected function initializeController():void {
-		view = UnpureView.getInstance();
+		view = UnpureView.getInstance(moduleName);
 	}
 
 	/**
@@ -103,12 +117,11 @@ public class UnpureController {
 	 *
 	 * @return the Singleton instance of <code>Controller</code>
 	 */
-	public static function getInstance():UnpureController {
-		if (instance == null) {
-			instance = new UnpureController();
-			facade = UnpureFacade.getInstance();
+	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureController {
+		if (instanceRegistry[moduleName] == null) {
+			new UnpureController(moduleName);
 		}
-		return instance;
+		return instanceRegistry[moduleName];
 	}
 
 	/**
@@ -179,6 +192,15 @@ public class UnpureController {
 //		}
 
 		facade.removeCommand(notificationName);
+	}
+
+	/**
+	 * Remove an IController instance
+	 *
+	 * @param multitonKey of IController instance to remove
+	 */
+	public static function removeController(moduleName:String):void {
+		delete instanceRegistry[moduleName];
 	}
 
 }

@@ -8,6 +8,10 @@ import flash.display.Sprite;
 import flexunit.framework.TestCase;
 import flexunit.framework.TestSuite;
 
+import org.mvcexpress.extension.unpuremvc.patterns.facade.UnpureFacade;
+import org.mvcexpress.extension.unpuremvc.patterns.mediator.UnpureMediator;
+import org.mvcexpress.extension.unpuremvc.patterns.proxy.UnpureProxy;
+
 /**
  * Test the PureMVC Facade class.
  *
@@ -51,11 +55,11 @@ public class FacadeTest extends TestCase {
 	public function testGetInstance():void {
 
 		// Test Factory Method
-		var facade:IFacade = Facade.getInstance('FacadeTestKey1');
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey1');
 
 		// test assertions
 		assertTrue("Expecting instance not null", facade != null);
-		assertTrue("Expecting instance implements IFacade", facade is IFacade);
+		assertTrue("Expecting instance implements IFacade", facade is UnpureFacade);
 
 	}
 
@@ -78,7 +82,7 @@ public class FacadeTest extends TestCase {
 
 		// Create the Facade, register the FacadeTestCommand to
 		// handle 'FacadeTest' notifications
-		var facade:IFacade = Facade.getInstance('FacadeTestKey2');
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey2');
 		facade.registerCommand('FacadeTestNote', FacadeTestCommand);
 
 
@@ -111,7 +115,7 @@ public class FacadeTest extends TestCase {
 
 		// Create the Facade, register the FacadeTestCommand to
 		// handle 'FacadeTest' events
-		var facade:IFacade = Facade.getInstance('FacadeTestKey3');
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey3');
 		facade.registerCommand('FacadeTestNote', FacadeTestCommand);
 		facade.removeCommand('FacadeTestNote');
 
@@ -138,12 +142,12 @@ public class FacadeTest extends TestCase {
 	public function testRegisterAndRetrieveProxy():void {
 
 		// register a proxy and retrieve it.
-		var facade:IFacade = Facade.getInstance('FacadeTestKey4');
-		facade.registerProxy(new Proxy('colors', ['red', 'green', 'blue']));
-		var proxy:Proxy = Proxy(facade.retrieveProxy('colors'));
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey4');
+		facade.registerProxy(new UnpureProxy('colors', ['red', 'green', 'blue']));
+		var proxy:UnpureProxy = UnpureProxy(facade.retrieveProxy('colors'));
 
 		// test assertions
-		assertTrue("Expecting proxy is IProxy", proxy is IProxy);
+		assertTrue("Expecting proxy is IProxy", proxy is UnpureProxy);
 
 		// retrieve data from proxy
 		var data:Array = proxy.getData() as Array;
@@ -163,12 +167,12 @@ public class FacadeTest extends TestCase {
 	public function testRegisterAndRemoveProxy():void {
 
 		// register a proxy, remove it, then try to retrieve it
-		var facade:IFacade = Facade.getInstance('FacadeTestKey5');
-		var proxy:IProxy = new Proxy('sizes', ['7', '13', '21']);
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey5');
+		var proxy:UnpureProxy = new UnpureProxy('sizes', ['7', '13', '21']);
 		facade.registerProxy(proxy);
 
 		// remove the proxy
-		var removedProxy:IProxy = facade.removeProxy('sizes');
+		var removedProxy:UnpureProxy = facade.removeProxy('sizes');
 
 		// assert that we removed the appropriate proxy
 		assertTrue("Expecting removedProxy.getProxyName() == 'sizes'",
@@ -188,22 +192,22 @@ public class FacadeTest extends TestCase {
 	public function testRegisterRetrieveAndRemoveMediator():void {
 
 		// register a mediator, remove it, then try to retrieve it
-		var facade:IFacade = Facade.getInstance('FacadeTestKey6');
-		facade.registerMediator(new Mediator(Mediator.NAME, new Sprite()));
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey6');
+		facade.registerMediator(new UnpureMediator(UnpureMediator.NAME, new Sprite()));
 
 		// retrieve the mediator
-		assertNotNull("Expecting mediator is not null", facade.retrieveMediator(Mediator.NAME));
+		assertNotNull("Expecting mediator is not null", facade.retrieveMediator(UnpureMediator.NAME));
 
 		// remove the mediator
-		var removedMediator:IMediator = facade.removeMediator(Mediator.NAME);
+		var removedMediator:UnpureMediator = facade.removeMediator(UnpureMediator.NAME);
 
 		// assert that we have removed the appropriate mediator
 		assertTrue("Expecting removedMediator.getMediatorName() == Mediator.NAME",
-				removedMediator.getMediatorName() == Mediator.NAME);
+				removedMediator.getMediatorName() == UnpureMediator.NAME);
 
 		// assert that the mediator is no longer retrievable
 		assertTrue("Expecting facade.retrieveMediator( Mediator.NAME ) == null )",
-				facade.retrieveMediator(Mediator.NAME) == null);
+				facade.retrieveMediator(UnpureMediator.NAME) == null);
 
 	}
 
@@ -213,8 +217,8 @@ public class FacadeTest extends TestCase {
 	public function testHasProxy():void {
 
 		// register a Proxy
-		var facade:IFacade = Facade.getInstance('FacadeTestKey7');
-		facade.registerProxy(new Proxy('hasProxyTest', [1, 2, 3]));
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey7');
+		facade.registerProxy(new UnpureProxy('hasProxyTest', [1, 2, 3]));
 
 		// assert that the model.hasProxy method returns true
 		// for that proxy name
@@ -229,8 +233,8 @@ public class FacadeTest extends TestCase {
 	public function testHasMediator():void {
 
 		// register a Mediator
-		var facade:IFacade = Facade.getInstance('FacadeTestKey8');
-		facade.registerMediator(new Mediator('facadeHasMediatorTest', new Sprite()));
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey8');
+		facade.registerMediator(new UnpureMediator('facadeHasMediatorTest', new Sprite()));
 
 		// assert that the facade.hasMediator method returns true
 		// for that mediator name
@@ -252,7 +256,7 @@ public class FacadeTest extends TestCase {
 	public function testHasCommand():void {
 
 		// register the ControllerTestCommand to handle 'hasCommandTest' notes
-		var facade:IFacade = Facade.getInstance('FacadeTestKey10');
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey10');
 		facade.registerCommand('facadeHasCommandTest', FacadeTestCommand);
 
 		// test that hasCommand returns true for hasCommandTest notifications
@@ -273,21 +277,21 @@ public class FacadeTest extends TestCase {
 
 		// assert that the Facade.hasCore method returns false first
 		assertTrue("Expecting facade.hasCore('FacadeTestKey11') == false",
-				Facade.hasCore('FacadeTestKey11') == false);
+				UnpureFacade.hasCore('FacadeTestKey11') == false);
 
 		// register a Core
-		var facade:IFacade = Facade.getInstance('FacadeTestKey11');
+		var facade:UnpureFacade = UnpureFacade.getInstance('FacadeTestKey11');
 
 		// assert that the Facade.hasCore method returns true now that a Core is registered
 		assertTrue("Expecting facade.hasCore('FacadeTestKey11') == true",
-				Facade.hasCore('FacadeTestKey11') == true);
+				UnpureFacade.hasCore('FacadeTestKey11') == true);
 
 		// remove the Core
-		Facade.removeCore('FacadeTestKey11');
+		UnpureFacade.removeCore('FacadeTestKey11');
 
 		// assert that the Facade.hasCore method returns false now that the core has been removed.
 		assertTrue("Expecting facade.hasCore('FacadeTestKey11') == false",
-				Facade.hasCore('FacadeTestKey11') == false);
+				UnpureFacade.hasCore('FacadeTestKey11') == false);
 
 	}
 
