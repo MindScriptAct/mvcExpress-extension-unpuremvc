@@ -318,6 +318,8 @@ public class UnpureFacade {
 	protected const SINGLETON_MSG:String = "Facade Singleton already constructed!";
 	protected const MULTITON_MSG:String = "Facade instance for this Multiton key already constructed!";
 
+	private static var _instance:UnpureFacade;
+
 	/**
 	 * Constructor.
 	 *
@@ -388,6 +390,23 @@ public class UnpureFacade {
 			$mediatorRegistry[moduleName] = new Dictionary();
 		}
 		return instanceRegistry[moduleName];
+	}
+
+	static protected function get instance():UnpureFacade {
+		return _instance;
+	}
+
+	static protected function set instance(value:UnpureFacade):void {
+		_instance = value;
+
+		var moduleName:String = "$_SINGLECORE_$";
+
+		$commandRegistry[moduleName] = new Dictionary();
+		$proxyRegistry[moduleName] = new Dictionary();
+		$mediatorRegistry[moduleName] = new Dictionary()
+
+		instanceRegistry[moduleName] = value;
+
 	}
 
 	/**
