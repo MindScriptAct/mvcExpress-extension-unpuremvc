@@ -372,6 +372,11 @@ public class UnpureFacade {
 	 * sure to call <code>super.initializeFacade()</code>, though.</P>
 	 */
 	protected function initializeFacade():void {
+
+		$commandRegistry[moduleName] = new Dictionary();
+		$proxyRegistry[moduleName] = new Dictionary();
+		$mediatorRegistry[moduleName] = new Dictionary()
+
 		initializeModel();
 		initializeController();
 		initializeView();
@@ -398,14 +403,6 @@ public class UnpureFacade {
 
 	static protected function set instance(value:UnpureFacade):void {
 		_instance = value;
-
-		var moduleName:String = "$_SINGLECORE_$";
-
-		$commandRegistry[moduleName] = new Dictionary();
-		$proxyRegistry[moduleName] = new Dictionary();
-		$mediatorRegistry[moduleName] = new Dictionary()
-
-		instanceRegistry[moduleName] = value;
 
 	}
 
