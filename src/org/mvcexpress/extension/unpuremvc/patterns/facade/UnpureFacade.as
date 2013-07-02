@@ -320,6 +320,8 @@ public class UnpureFacade {
 
 	private static var _instance:UnpureFacade;
 
+	private static const SINGLE_CORE_NAME:String = "$_SINGLECORE_$";
+
 	/**
 	 * Constructor.
 	 *
@@ -332,11 +334,13 @@ public class UnpureFacade {
 	 * @throws Error Error if Singleton instance has already been constructed
 	 *
 	 */
-	public function UnpureFacade(moduleName:String = "$_SINGLECORE_$") {
+	public function UnpureFacade(moduleName:String = null) {
 //		if (instance != null) throw Error(SINGLETON_MSG);
 //		instance = this;
 //		initializeFacade();
-
+		if (moduleName == null) {
+			moduleName = SINGLE_CORE_NAME;
+		}
 		if (instanceRegistry[moduleName] != null) {
 			if (moduleName == "") {
 				throw Error(SINGLETON_MSG);
@@ -387,7 +391,10 @@ public class UnpureFacade {
 	 *
 	 * @return the Singleton instance of the Facade
 	 */
-	public static function getInstance(moduleName:String = "$_SINGLECORE_$"):UnpureFacade {
+	public static function getInstance(moduleName:String = null):UnpureFacade {
+		if (moduleName == null) {
+			moduleName = SINGLE_CORE_NAME;
+		}
 		if (instanceRegistry[moduleName] == null) {
 			new UnpureFacade(moduleName);
 			$commandRegistry[moduleName] = new Dictionary();
