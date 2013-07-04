@@ -56,6 +56,7 @@ public class UnpureMediator extends Mediator {
 		moduleName = facade.getModuleName();
 		messenger = facade.getMessender();
 		proxyMap = facade.getProxyMap();
+		mediatorMap = facade.getMediatorMap();
 	}
 
 	pureLegsCore function initNotificationHandling():void {
